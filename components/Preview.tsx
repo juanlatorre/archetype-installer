@@ -78,7 +78,7 @@ const Preview: React.FC<PreviewProps> = ({ state, activeTab, onTabChange }) => {
                 className="absolute inset-0 z-40 pointer-events-none p-6 flex flex-col justify-between"
                 style={{
                   backgroundImage: `url(${state.activeTheme.previewImage})`,
-                  backgroundSize: "100% 100%",
+                  backgroundSize: "contain",
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",
                 }}
@@ -88,7 +88,7 @@ const Preview: React.FC<PreviewProps> = ({ state, activeTab, onTabChange }) => {
                 className="absolute inset-0 z-40 pointer-events-none p-6 flex flex-col justify-between"
                 style={{
                   backgroundImage: `url(${loginBackgroundImage})`,
-                  backgroundSize: "100% 100%",
+                  backgroundSize: "contain",
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",
                 }}
