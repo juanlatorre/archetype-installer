@@ -17,6 +17,8 @@ import {
   getCounterInclude,
   copyFolderRecursively
 } from './utils/exportUtils';
+import { getRelativeTime } from './utils/dateUtils';
+import archetypeInfoData from './archetype-info.json';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'Game' | 'Login'>('Game');
@@ -26,7 +28,11 @@ const App: React.FC = () => {
     activeCursorSet: CURSOR_SETS[0].id,
     activeBubbleSet: BUBBLE_SETS[0].id,
     activeCounterStyle: COUNTER_STYLES[0],
-    activeLoginVariant: 'Unova'
+    activeLoginVariant: 'Unova',
+    archetypeInfo: {
+      ...archetypeInfoData,
+      time: getRelativeTime(archetypeInfoData.commitDate)
+    }
   });
 
   const [isGenerating, setIsGenerating] = useState(false);
@@ -124,15 +130,15 @@ const App: React.FC = () => {
   };
 
   return (
-    <div 
-      className="flex flex-col h-screen overflow-hidden transition-colors duration-500" 
-      style={{ 
+    <div
+      className="flex flex-col h-screen overflow-hidden transition-colors duration-500"
+      style={{
         backgroundColor: state.activeTheme.sub,
         color: state.activeTheme.textOnSub
       }}
     >
-      <Navbar state={state} />
-      
+      <Navbar state={state} archetypeInfo={state.archetypeInfo} />
+
       <main className="flex flex-1 overflow-hidden relative">
         <Sidebar 
           state={state}

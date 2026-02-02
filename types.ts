@@ -17,6 +17,7 @@ export type LoginVariant = 'Unova' | 'Allstars' | 'Default';
 export interface ColorTheme {
   id: string;
   name: string;
+  description?: string;
   hex: string;           // main-color (accent)
   sub: string;           // sub-color (background)
   textOnMain: string;    // font-main-color (text color when on top of main accent)
@@ -63,4 +64,9 @@ export interface AppState {
   activeBubbleSet: string;
   activeCounterStyle: CounterStyle;
   activeLoginVariant: LoginVariant;
+  archetypeInfo?: {
+    commit: string;
+    time: string;
+    repoUrl: string;
+  };
 }

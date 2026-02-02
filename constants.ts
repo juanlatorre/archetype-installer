@@ -23,7 +23,8 @@ export const COUNTER_STYLES: CounterStyle[] = [
 export const COLOR_THEMES: ColorTheme[] = [
   { 
     id: 'default', 
-    name: 'Archetype Default', 
+    name: 'Original', 
+    description: 'The original theme',
     hex: '#42b9ff', 
     sub: '#1c2328', 
     textOnMain: '#000000',
@@ -37,6 +38,7 @@ export const COLOR_THEMES: ColorTheme[] = [
   { 
     id: 'frostbite', 
     name: 'Frostbite', 
+    description: 'A variant created by Bahbus',
     hex: '#4F6D88', 
     sub: '#DDE7E4', 
     textOnMain: '#ffffff',
@@ -50,6 +52,7 @@ export const COLOR_THEMES: ColorTheme[] = [
   { 
     id: 'industrial', 
     name: 'Industrial', 
+    description: 'A variant created by Bahbus',
     hex: '#3A444F', 
     sub: '#11141A', 
     textOnMain: '#E0E4E8', 
@@ -63,6 +66,7 @@ export const COLOR_THEMES: ColorTheme[] = [
   { 
     id: 'rose', 
     name: 'Rosé', 
+    description: 'A variant created by Bahbus',
     hex: '#C1607D', 
     sub: '#F5ECE9', 
     textOnMain: '#ffffff', 
@@ -76,6 +80,7 @@ export const COLOR_THEMES: ColorTheme[] = [
   { 
     id: 'sunrise', 
     name: 'Sunrise', 
+    description: 'A variant created by Bahbus',
     hex: '#D98742', 
     sub: '#EAE3D2', 
     textOnMain: '#1E1A12', 
@@ -89,6 +94,7 @@ export const COLOR_THEMES: ColorTheme[] = [
   { 
     id: 'twilight', 
     name: 'Twilight', 
+    description: 'A variant created by Bahbus',
     hex: '#352D4F', 
     sub: '#0A0810', 
     textOnMain: '#EAE6F2', 
@@ -102,6 +108,7 @@ export const COLOR_THEMES: ColorTheme[] = [
   { 
     id: 'green420', 
     name: '420 Green', 
+    description: 'A variant created by Bahbus',
     hex: '#1F5D2E', 
     sub: '#0A0F0C', 
     textOnMain: '#ffffff',
@@ -115,6 +122,7 @@ export const COLOR_THEMES: ColorTheme[] = [
   { 
     id: 'ember', 
     name: 'Ember', 
+    description: 'A variant created by Bahbus',
     hex: '#B44527', 
     sub: '#121010', 
     textOnMain: '#F7E7D1',

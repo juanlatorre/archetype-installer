@@ -102,15 +102,22 @@ const Sidebar: React.FC<SidebarProps> = ({
                 >
                   <div className="flex items-center gap-3">
                     <div 
-                      className="size-7 rounded-full shadow-lg border border-white/20" 
+                      className="size-7 rounded-full shadow-lg border border-white/20 shrink-0" 
                       style={{ 
                         backgroundColor: theme.hex,
                         boxShadow: isActive ? `0 0 15px ${theme.glow}` : 'none'
                       }}
                     />
-                    <span className="font-bold text-sm" style={{ color: state.activeTheme.textOnSub }}>
-                      {theme.name}
-                    </span>
+                    <div className="flex flex-col items-start">
+                      <span className="font-bold text-sm" style={{ color: state.activeTheme.textOnSub }}>
+                        {theme.name}
+                      </span>
+                      {theme.description && (
+                        <span className="text-[8px] opacity-40 uppercase tracking-widest" style={{ color: state.activeTheme.textOnSub }}>
+                          {theme.description}
+                        </span>
+                      )}
+                    </div>
                   </div>
                   {isActive && (
                     <span className="material-symbols-outlined text-primary text-xl">check_circle</span>

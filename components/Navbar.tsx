@@ -4,9 +4,14 @@ import { AppState } from '../types';
 
 interface NavbarProps {
   state: AppState;
+  archetypeInfo?: {
+    commit: string;
+    time: string;
+    repoUrl: string;
+  };
 }
 
-const Navbar: React.FC<NavbarProps> = ({ state }) => {
+const Navbar: React.FC<NavbarProps> = ({ state, archetypeInfo }) => {
   return (
     <header className="flex items-center justify-between px-10 py-3 border-b border-white/10 glass z-20 shrink-0">
       <div className="flex items-center gap-4">
@@ -17,18 +22,32 @@ const Navbar: React.FC<NavbarProps> = ({ state }) => {
         </div>
         <h1 className="text-xl font-bold tracking-tight" style={{ color: 'var(--text-on-sub)' }}>Archetype Studio</h1>
       </div>
-      
+
       <div className="flex items-center gap-8">
         <nav className="flex items-center gap-8">
-          <a 
-            href="https://github.com/ssjshields/archetype" 
-            target="_blank" 
+          <a
+            href="https://github.com/ssjshields/archetype"
+            target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium transition-colors hover:opacity-100 opacity-60" 
+            className="text-sm font-medium transition-colors hover:opacity-100 opacity-60"
             style={{ color: 'var(--text-on-sub)' }}
           >
             Github
           </a>
+          {archetypeInfo && (
+            <>
+              <span className="text-sm opacity-60" style={{ color: 'var(--text-on-sub)' }}>•</span>
+              <a
+                href={`${archetypeInfo.repoUrl}/commit/${archetypeInfo.commit}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium transition-colors hover:opacity-100 opacity-60"
+                style={{ color: 'var(--text-on-sub)' }}
+              >
+                Using commit {archetypeInfo.commit} from {archetypeInfo.time}
+              </a>
+            </>
+          )}
         </nav>
       </div>
     </header>
