@@ -135,40 +135,38 @@ export const COLOR_THEMES: ColorTheme[] = [
   },
 ];
 
-const BASE_SPRITE_COORD = { x: 3, y: 21, w: 15, h: 23, hotX: 1, hotY: 2 };
-
 export const CURSOR_SETS: CursorSet[] = [
-  { 
-    id: 'classic-white', 
-    name: 'Classic White', 
-    file: 'cursors-white.png', 
-    isModern: false, 
+  {
+    id: 'classic-white',
+    name: 'Classic White',
+    file: 'cursors-white.png',
+    isModern: false,
     isDark: false,
-    sprite: BASE_SPRITE_COORD
+    sprite: { x: 3, y: 21, w: 15, h: 23, hotX: 1, hotY: 2 }
   },
-  { 
-    id: 'classic-black', 
-    name: 'Classic Black', 
-    file: 'cursors-black.png', 
-    isModern: false, 
+  {
+    id: 'classic-black',
+    name: 'Classic Black',
+    file: 'cursors-black.png',
+    isModern: false,
     isDark: true,
-    sprite: BASE_SPRITE_COORD
+    sprite: { x: 3, y: 21, w: 15, h: 23, hotX: 1, hotY: 2 }
   },
-  { 
-    id: 'modern-white', 
-    name: 'Modern White', 
-    file: 'modern-cursors-white.png', 
-    isModern: true, 
+  {
+    id: 'modern-white',
+    name: 'Modern White',
+    file: 'modern-cursors-white.png',
+    isModern: true,
     isDark: false,
-    sprite: BASE_SPRITE_COORD
+    sprite: { x: 3, y: 21, w: 15, h: 23, hotX: 1, hotY: 2 }
   },
-  { 
-    id: 'modern-black', 
-    name: 'Modern Black', 
-    file: 'modern-cursors-black.png', 
-    isModern: true, 
+  {
+    id: 'modern-black',
+    name: 'Modern Black',
+    file: 'modern-cursors-black.png',
+    isModern: true,
     isDark: true,
-    sprite: BASE_SPRITE_COORD
+    sprite: { x: 3, y: 21, w: 15, h: 23, hotX: 1, hotY: 2 }
   },
 ];
 

@@ -52,11 +52,6 @@ export interface BubbleSet {
   isCustom?: boolean;
 }
 
-export interface IconItem {
-  id: string;
-  icon: string;
-}
-
 export interface AppState {
   activeTheme: ColorTheme;
   activeShape: ThemeShape;
