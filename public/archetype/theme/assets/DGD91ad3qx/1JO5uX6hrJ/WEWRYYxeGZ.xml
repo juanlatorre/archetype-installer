@@ -65,10 +65,10 @@
 				<param name=""><image>mi-hpbar-violet.*</image></param>
 			</theme>
 			<theme name="progressbar-spdef" ref="-defaults" allowWildcard="true">
-				<param name=""><image>mi-xpbar.*</image></param>
+				<param name=""><image>mi-hpbar-orange.*</image></param>
 			</theme>
 			<theme name="progressbar-speed" ref="-defaults" allowWildcard="true">
-				<param name=""><image>mi-hpbar-orange.*</image></param>
+				<param name=""><image>mi-xpbar.*</image></param>
 			</theme>
 			<theme name="progressbar-total" ref="-defaults" allowWildcard="true">
 				<param name=""><image>progressbar-white.*</image></param>

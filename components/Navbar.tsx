@@ -44,7 +44,7 @@ const Navbar: React.FC<NavbarProps> = ({ state, archetypeInfo }) => {
                 className="text-sm font-medium transition-colors hover:opacity-100 opacity-60"
                 style={{ color: 'var(--text-on-sub)' }}
               >
-                Using commit {archetypeInfo.commit} from {archetypeInfo.time}
+                Using commit {archetypeInfo.commit.slice(0, 7)} from {archetypeInfo.time}
               </a>
             </>
           )}

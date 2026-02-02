@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# But allow public/themes (our manual color themes)
+!public/themes/
+!public/themes/**
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

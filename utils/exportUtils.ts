@@ -75,4 +75,30 @@ export async function copyFolderRecursively(
       console.warn(`Could not copy ${file}:`, error);
     }
   }
+
+  const colorFiles = [
+    'CHOOSE_YOUR_COLORS.xml',
+    'CHOOSE_YOUR_COLORS_420GREEN.xml',
+    'CHOOSE_YOUR_COLORS_EMBER.xml',
+    'CHOOSE_YOUR_COLORS_FROSTBITE.xml',
+    'CHOOSE_YOUR_COLORS_INDUSTRIAL.xml',
+    'CHOOSE_YOUR_COLORS_ROSÉ.xml',
+    'CHOOSE_YOUR_COLORS_SUNRISE.xml',
+    'CHOOSE_YOUR_COLORS_TWILIGHT.xml'
+  ];
+
+  for (const file of colorFiles) {
+    try {
+      const response = await fetch(`/themes/colors/${file}`);
+      if (!response.ok) {
+        console.warn(`Could not fetch ${file}: ${response.statusText}`);
+        continue;
+      }
+
+      const blob = await response.blob();
+      zip.file(`${targetPath}/theme/${file}`, blob);
+    } catch (error) {
+      console.warn(`Could not copy ${file}:`, error);
+    }
+  }
 }

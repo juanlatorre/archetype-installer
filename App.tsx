@@ -79,7 +79,7 @@ const App: React.FC = () => {
 
       const themeXml = await (await fetch('/archetype/theme/theme.xml')).text();
       const modifiedThemeXml = themeXml.replace(
-        /<include filename="CHOOSE_YOUR_COLORS.xml"\/>/,
+        /<include filename="CHOOSE_YOUR_COLORS\.xml"\/>/,
         `<include filename="${colorsFilename}"/>`
       );
       zip.file('archetype/theme/theme.xml', modifiedThemeXml);
