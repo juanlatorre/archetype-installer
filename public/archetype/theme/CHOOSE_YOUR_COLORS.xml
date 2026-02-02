@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><themes>
+<!-- CHOOSE YOUR COLORS! Replace the hex code between the color></color> tags with a different value.
+Refer to the CHOOSE_YOUR_COLORS_GUIDE.png for examples of defined areas. -->
+
+<!--
+Hex Color Picker
+https://htmlcolorcodes.com/color-picker/
+
+Hex Color Transparency Values
+https://gist.github.com/lopspower/03fb1cc0ac9f32ef38f4
+
+Color Palettes 
+https://coolors.co/palettes/trending
+-->
+
+<!-- Main Theme -->
+<constantDef name="main-color"><color>#42b9ff</color></constantDef> <!--default: #42b9ff, red: #df0d35, green: #82d40c, yellow: #f6c328, purple: #7757ad, pink: #ff527b -->
+<constantDef name="sub-color"><color>#1c2328</color></constantDef> <!--default: #1c2328-->
+<constantDef name="button-color"><color>#263238</color></constantDef> <!--default: #263238-->
+<constantDef name="accent-color"><color>#2d3b40</color></constantDef> <!--default: #2d3b40-->
+
+<constantDef name="font-main-color"><color>#ffffff</color></constantDef> <!--default: #ffffff-->
+<constantDef name="font-sub-color"><color>#acb7b9</color></constantDef> <!--default: #acb7b9-->
+<constantDef name="font-button-color"><color>#84959b</color></constantDef> <!--default: #84959b-->
+<constantDef name="font-disabled-color"><color>#9984959b</color></constantDef> <!--default: #9984959b-->
+
+<constantDef name="hp-high-color"><color>#82e026</color></constantDef> <!--default: #82e026-->
+<constantDef name="hp-mid-color"><color>#ecd031</color></constantDef> <!--default: #ecd031-->
+<constantDef name="hp-low-color"><color>#dc2222</color></constantDef> <!--default: #dc2222-->
+<constantDef name="xp-color"><color>#2eb2f8</color></constantDef> <!--default: #2eb2f8-->
+<constantDef name="friendship-color"><color>#b61ae8</color></constantDef> <!--default: #b61ae8-->
+<constantDef name="icon-color"><color>#ffffff</color></constantDef> <!--default: #ffffff-->
+
+<!-- Berry Watering Colors -->
+<constantDef name="water-background"><color>#D91c2328</color></constantDef> <!--default: #D91c2328-->
+<constantDef name="water-warning"><color>#dc2222</color></constantDef> <!--default: #dc2222-->
+<constantDef name="berry-progress"><color>#42b9ff</color></constantDef>  <!--default: #42b9ff-->
+<constantDef name="berry-progress-warning"><color>#dc2222</color></constantDef> <!--default: #dc2222-->
+<constantDef name="berry-progress-disabled"><color>#42FFFFFF</color></constantDef> <!--default: #42FFFFFF-->
+
+<!-- Unova Login Screen -->
+<constantDef name="reshiram-color"><color>#1b2526</color></constantDef> <!--default: #1b2526-->
+<constantDef name="reshiram-aura"><color>#cb4e03</color></constantDef> <!--default: #cb4e03-->
+<constantDef name="zekrom-color"><color>#070b0b</color></constantDef> <!--default: #070b0b-->
+<constantDef name="zekrom-aura"><color>#00a5c9</color></constantDef> <!--default: #00a5c9-->
+
+<!-- Encounter Tracker Colors: -->
+<constantDef name="counter-ball-color"><color>#42b9ff</color></constantDef> <!--default: #42b9ff, red: #df0d35, green: #82d40c, yellow: #f6c328, purple: #7757ad, pink: #ff527b -->
+<constantDef name="counter-ball-outline"><color>#ffffff</color></constantDef> <!--default: #ffffff-->
+<constantDef name="counter-min-max-button-color"><color>#ffffff</color></constantDef> <!--default: #ffffff-->
+<constantDef name="counter-main-color"><color>#42b9ff</color></constantDef> <!--default: #42b9ff-->
+<constantDef name="counter-sub-color"><color>#1c2328</color></constantDef> <!--default: #1c2328-->
+<constantDef name="counter-font"><color>#f1f2f3</color></constantDef> <!--default: #f1f2f3-->
+<constantDef name="counter-font-border"><color>#233031</color></constantDef> <!--default: #233031-->
+
+</themes>

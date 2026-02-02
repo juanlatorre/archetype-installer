@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><themes>
+<!-- CHOOSE YOUR COLORS! Replace the hex code between the color></color> tags with a different value.
+Refer to the CHOOSE_YOUR_COLORS_GUIDE.png for examples of defined areas. -->
+
+<!-- Twilight -->
+
+<!-- Main Colors -->
+<!-- Title bar and window outline -->
+<constantDef name="main-color"><color>#352D4F</color></constantDef>
+<!-- Background -->
+<constantDef name="sub-color"><color>#0A0810</color></constantDef>
+<!-- Buttons -->
+<constantDef name="button-color"><color>#14111C</color></constantDef>
+<!-- Outlines -->
+<constantDef name="accent-color"><color>#2B1E3E</color></constantDef>
+
+<!-- Font Colors -->
+<!-- Font color on top of main-color -->
+<constantDef name="font-main-color"><color>#EAE6F2</color></constantDef>
+<!-- Font color on top of sub-color -->
+<constantDef name="font-sub-color"><color>#BFB4C9</color></constantDef>
+<!-- Font color on top of button-color -->
+<constantDef name="font-button-color"><color>#EAE6F2</color></constantDef>
+<!-- Font color for a disabled button -->
+<constantDef name="font-disabled-color"><color>#6B6472</color></constantDef>
+
+<!-- Bar Fill Colors -->
+<!-- HP (high) — always a shade of green -->
+<constantDef name="hp-high-color"><color>#3CCB6A</color></constantDef>
+<!-- HP (mid) — always a shade of yellow -->
+<constantDef name="hp-mid-color"><color>#CBB34A</color></constantDef>
+<!-- HP (low) — always a shade of red -->
+<constantDef name="hp-low-color"><color>#B34C5A</color></constantDef>
+<!-- XP bar — always a shade of blue -->
+<constantDef name="xp-color"><color>#5C7CCF</color></constantDef>
+<!-- Friendship bar — always a shade of purple or pink -->
+<constantDef name="friendship-color"><color>#C372C6</color></constantDef>
+
+<!-- Icon tint -->
+<constantDef name="icon-color"><color>#EAE6F2</color></constantDef>
+
+<!-- Berry Watering Colors -->
+<!-- Water background -->
+<constantDef name="water-background"><color>#141922</color></constantDef>
+<!-- Water warning -->
+<constantDef name="water-warning"><color>#CBB34A</color></constantDef>
+<!-- Berry progress -->
+<constantDef name="berry-progress"><color>#4E8E68</color></constantDef>
+<!-- Berry progress warning -->
+<constantDef name="berry-progress-warning"><color>#C97A3A</color></constantDef>
+<!-- Disabled berry UI -->
+<constantDef name="berry-progress-disabled"><color>#23202A</color></constantDef>
+
+<!-- Unova Login Screen -->
+<!-- Each -color acts as the fill for their side and the background of the opposite side, a la yin-yang. Auras should be opposites and complementary at the same time. -->
+<constantDef name="reshiram-color"><color>#261B3A</color></constantDef>
+<constantDef name="reshiram-aura"><color>#AD8C19</color></constantDef>
+<constantDef name="zekrom-color"><color>#0A1112</color></constantDef>
+<constantDef name="zekrom-aura"><color>#1C7539</color></constantDef>
+
+<!-- Encounter Tracker Colors: -->
+<!-- Same as sub-color -->
+<constantDef name="counter-ball-color"><color>#0A0810</color></constantDef>
+<!-- Same as main-color -->
+<constantDef name="counter-ball-outline"><color>#352D4F</color></constantDef>
+<!-- Must contrast well with counter-main-color -->
+<constantDef name="counter-min-max-button-color"><color>#EAE6F2</color></constantDef>
+<!-- Same as main-color -->
+<constantDef name="counter-main-color"><color>#352D4F</color></constantDef>
+<!-- Same as sub-color -->
+<constantDef name="counter-sub-color"><color>#0A0810</color></constantDef>
+<!-- Same as font-color -->
+<constantDef name="counter-font"><color>#EAE6F2</color></constantDef>
+<constantDef name="counter-font-border"><color>#0A0810</color></constantDef>
+
+</themes>
