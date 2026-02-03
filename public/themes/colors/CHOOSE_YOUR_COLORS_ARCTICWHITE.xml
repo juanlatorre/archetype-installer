@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><themes>
+<!-- CHOOSE YOUR LOOK! -->
+
+<!-- Artic White -->
+    <constantDef name="main-color"><color>#A2D2FF</color></constantDef>
+    <constantDef name="sub-color"><color>#F8F9FA</color></constantDef>
+    <constantDef name="button-color"><color>#E9ECEF</color></constantDef>
+    <constantDef name="accent-color"><color>#4682B4</color></constantDef>
+
+    <constantDef name="font-main-color"><color>#003049</color></constantDef>
+    <constantDef name="font-sub-color"><color>#334155</color></constantDef>
+    <constantDef name="font-button-color"><color>#003049</color></constantDef>
+    <constantDef name="font-disabled-color"><color>#ADB5BD</color></constantDef>
+
+    <constantDef name="hp-high-color"><color>#2D6A4F</color></constantDef>
+    <constantDef name="hp-mid-color"><color>#D4A017</color></constantDef>
+    <constantDef name="hp-low-color"><color>#E63946</color></constantDef>
+    <constantDef name="xp-color"><color>#0077B6</color></constantDef>
+    <constantDef name="friendship-color"><color>#B79CED</color></constantDef>
+
+    <constantDef name="icon-color"><color>#0077B6</color></constantDef>
+
+    <constantDef name="water-background"><color>#D1E9F6</color></constantDef>
+    <constantDef name="water-warning"><color>#E63946</color></constantDef>
+    <constantDef name="berry-progress"><color>#457B9D</color></constantDef>
+    <constantDef name="berry-progress-warning"><color>#F4A261</color></constantDef>
+    <constantDef name="berry-progress-disabled"><color>#DEE2E6</color></constantDef>
+
+    <constantDef name="reshiram-color"><color>#FFFFFF</color></constantDef>
+    <constantDef name="reshiram-aura"><color>#A2D2FF</color></constantDef>
+    <constantDef name="zekrom-color"><color>#2B2D42</color></constantDef>
+    <constantDef name="zekrom-aura"><color>#00B4D8</color></constantDef>
+
+    <constantDef name="counter-ball-color"><color>#F8F9FA</color></constantDef>
+    <constantDef name="counter-ball-outline"><color>#A2D2FF</color></constantDef>
+    <constantDef name="counter-min-max-button-color"><color>#003049</color></constantDef>
+    <constantDef name="counter-main-color"><color>#E9ECEF</color></constantDef>
+    <constantDef name="counter-sub-color"><color>#F8F9FA</color></constantDef>
+    <constantDef name="counter-font"><color>#003049</color></constantDef>
+    <constantDef name="counter-font-border"><color>#FFFFFF</color></constantDef>
+
+</themes>

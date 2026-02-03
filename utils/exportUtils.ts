@@ -11,7 +11,8 @@ export const COLORS_FILENAME_MAP: Record<string, string> = {
   sunrise: 'CHOOSE_YOUR_COLORS_SUNRISE.xml',
   twilight: 'CHOOSE_YOUR_COLORS_TWILIGHT.xml',
   green420: 'CHOOSE_YOUR_COLORS_420GREEN.xml',
-  ember: 'CHOOSE_YOUR_COLORS_EMBER.xml'
+  ember: 'CHOOSE_YOUR_COLORS_EMBER.xml',
+  arcticwhite: 'CHOOSE_YOUR_COLORS_ARCTICWHITE.xml'
 };
 
 export function getColorsFilename(themeId: string): string {
@@ -79,6 +80,7 @@ export async function copyFolderRecursively(
   const colorFiles = [
     'CHOOSE_YOUR_COLORS.xml',
     'CHOOSE_YOUR_COLORS_420GREEN.xml',
+    'CHOOSE_YOUR_COLORS_ARCTICWHITE.xml',
     'CHOOSE_YOUR_COLORS_EMBER.xml',
     'CHOOSE_YOUR_COLORS_FROSTBITE.xml',
     'CHOOSE_YOUR_COLORS_INDUSTRIAL.xml',
