@@ -32,7 +32,27 @@ const Navbar: React.FC<NavbarProps> = ({ state, archetypeInfo }) => {
             className="text-sm font-medium transition-colors hover:opacity-100 opacity-60"
             style={{ color: 'var(--text-on-sub)' }}
           >
-            Github
+            Archetype Github
+          </a>
+          <span className="text-sm opacity-60" style={{ color: 'var(--text-on-sub)' }}>•</span>
+          <a
+            href="https://github.com/juanlatorre/archetype-installer"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-medium transition-colors hover:opacity-100 opacity-60"
+            style={{ color: 'var(--text-on-sub)' }}
+          >
+            Installer Github
+          </a>
+          <span className="text-sm opacity-60" style={{ color: 'var(--text-on-sub)' }}>•</span>
+          <a
+            href="https://github.com/juanlatorre"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-medium transition-colors hover:opacity-100 opacity-60"
+            style={{ color: 'var(--text-on-sub)' }}
+          >
+            With &lt;3 by juanlatorre
           </a>
           {archetypeInfo && (
             <>

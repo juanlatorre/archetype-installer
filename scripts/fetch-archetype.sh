@@ -22,16 +22,12 @@ echo "Cloned commit: $COMMIT ($COMMIT_DATE)"
 rm -rf "$TEMP_DIR/.git"
 rm -f "$TEMP_DIR/.gitignore"
 
-# Move contents to public/archetype (overrides everything)
-rm -rf public/archetype
-mkdir -p public
-mv "$TEMP_DIR" public/archetype
+  # Move contents to public/archetype (overrides everything)
+  rm -rf public/archetype
+  mkdir -p public
+  mv "$TEMP_DIR" public/archetype
 
-# Bump revision number in info.xml
-sed -i.bak 's/theme_revision="5"/theme_revision="6"/' public/archetype/info.xml
-rm -f public/archetype/info.xml.bak
-
-# Update archetype-config.json with new commit info
+  # Update archetype-config.json with new commit info
 node -e "
 const config = require('./$ARCHETYPE_CONFIG');
 config.archetypeRepo.commit = '$COMMIT';
