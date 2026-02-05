@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import JSZip from 'jszip';
+import { Analytics } from "@vercel/analytics/react";
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Preview from './components/Preview';
@@ -159,6 +160,7 @@ const App: React.FC = () => {
       </main>
 
       <Footer state={state} onGenerate={handleGenerate} isGenerating={isGenerating} />
+      <Analytics />
     </div>
   );
 };
