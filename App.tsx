@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Preview from './components/Preview';
 import Footer from './components/Footer';
+import MobileApp from './components/MobileApp';
 import { COLOR_THEMES, CURSOR_SETS, BUBBLE_SETS, COUNTER_STYLES } from './constants';
 import { AppState, ColorTheme, ThemeShape, CounterStyle, LoginVariant } from './types';
 import {
@@ -37,6 +38,17 @@ const App: React.FC = () => {
   });
 
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -129,6 +141,17 @@ const App: React.FC = () => {
       setIsGenerating(false);
     }
   };
+
+  if (isMobile) {
+    return (
+      <MobileApp
+        state={state}
+        onThemeChange={handleThemeChange}
+        onGenerate={handleGenerate}
+        isGenerating={isGenerating}
+      />
+    );
+  }
 
   return (
     <div
