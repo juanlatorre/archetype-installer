@@ -111,7 +111,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 />
                 <div className="flex flex-col items-start">
                   <span className="font-bold text-sm" style={{ color: state.activeTheme.textOnSub }}>
-                    Custom Theme
+                    {customTheme.name}
                   </span>
                   <span className="text-[8px] opacity-40 uppercase tracking-widest" style={{ color: state.activeTheme.textOnSub }}>
                     Create your own

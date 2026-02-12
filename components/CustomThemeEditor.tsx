@@ -45,6 +45,18 @@ const CustomThemeEditor: React.FC<CustomThemeEditorProps> = ({ theme, onChange }
         <p className="text-xs opacity-70" style={{ color: theme.textOnSub }}>Create your unique color scheme</p>
       </div>
 
+      <div className="mb-4">
+        <label className="text-xs font-bold block mb-1 opacity-70" style={{ color: theme.textOnSub }}>Theme Name</label>
+        <input
+          type="text"
+          value={theme.name}
+          onChange={(e) => handleChange('name', e.target.value)}
+          className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary/50 transition-colors"
+          style={{ color: theme.textOnSub, borderColor: 'rgba(255,255,255,0.1)' }}
+          placeholder="My Custom Theme"
+        />
+      </div>
+
       <div className="space-y-3 max-h-[400px] overflow-y-auto custom-scrollbar pr-2">
         {fields.map(({ key, label }) => (
           <div key={key} className="flex items-center justify-between p-3 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 transition-colors">

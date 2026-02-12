@@ -115,10 +115,18 @@ const App: React.FC = () => {
       const counterInclude = getCounterInclude(state.activeCounterStyle);
 
       const infoXml = await (await fetch('/archetype/info.xml')).text();
-      const modifiedInfoXml = infoXml.replace(
+      let modifiedInfoXml = infoXml.replace(
         /sprite_atlas="[^"]*"/,
         `sprite_atlas="${shapeAtlas}"`
       );
+
+      if (state.activeTheme.id === 'custom') {
+        modifiedInfoXml = modifiedInfoXml.replace(
+          /name="Archetype"/,
+          `name="${state.activeTheme.name}"`
+        );
+      }
+
       zip.file('archetype/info.xml', modifiedInfoXml);
 
       const themeXml = await (await fetch('/archetype/theme/theme.xml')).text();
@@ -159,7 +167,14 @@ const App: React.FC = () => {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `archetype-${state.activeTheme.id.toLowerCase()}.zip`;
+
+      let filename = `archetype-${state.activeTheme.id.toLowerCase()}.zip`;
+      if (state.activeTheme.id === 'custom') {
+        const sanitizedName = state.activeTheme.name.replace(/[^a-z0-9]/gi, '-').toLowerCase();
+        filename = `archetype-${sanitizedName || 'custom'}.zip`;
+      }
+
+      a.download = filename;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
