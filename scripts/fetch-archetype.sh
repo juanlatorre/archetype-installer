@@ -41,4 +41,7 @@ rm -rf "$TEMP_DIR"
 # Generate file manifest
 ./generate-files.sh
 
+# Generate base theme zip
+node scripts/generate-zip.js
+
 echo "Archetype updated successfully!"
