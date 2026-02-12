@@ -32,6 +32,7 @@ utils/archetypeFiles.json
 git-info.json
 archetype-info.json
 metadata.json
+public/base-theme.zip
 
 # Archetype documentation (auto-fetched, no need to commit)
 public/archetype/.github/
