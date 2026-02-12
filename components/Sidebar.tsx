@@ -2,6 +2,7 @@
 import React from 'react';
 import { COLOR_THEMES, CURSOR_SETS, BUBBLE_SETS, COUNTER_STYLES, LOGIN_VARIANTS } from '../constants';
 import { AppState, ColorTheme, ThemeShape, CounterStyle, LoginVariant } from '../types';
+import CustomThemeEditor from './CustomThemeEditor';
 
 interface SidebarProps {
   state: AppState;
@@ -12,6 +13,8 @@ interface SidebarProps {
   onBubbleChange: (id: string) => void;
   onCounterStyleChange: (style: CounterStyle) => void;
   onLoginVariantChange: (variant: LoginVariant) => void;
+  customTheme: ColorTheme;
+  onCustomThemeChange: (theme: ColorTheme) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ 
@@ -22,7 +25,9 @@ const Sidebar: React.FC<SidebarProps> = ({
   onCursorChange, 
   onBubbleChange,
   onCounterStyleChange,
-  onLoginVariantChange
+  onLoginVariantChange,
+  customTheme,
+  onCustomThemeChange
 }) => {
   if (activeTab === 'Login') {
     return (
@@ -84,9 +89,51 @@ const Sidebar: React.FC<SidebarProps> = ({
             <p className="text-xs opacity-70" style={{ color: state.activeTheme.textOnSub }}>Primary accent and UI color</p>
           </div>
           
+          {/* Custom Theme Button */}
+          <button
+              onClick={() => onThemeChange(customTheme)}
+              className={`w-full mb-3 relative flex items-center justify-between p-3.5 rounded-xl transition-all border shrink-0 ${
+                state.activeTheme.id === 'custom'
+                  ? 'border-primary shadow-[0_4px_12px_rgba(0,0,0,0.1)]'
+                  : 'border-white/5 hover:border-white/10'
+              }`}
+              style={{
+                backgroundColor: state.activeTheme.id === 'custom' ? `${customTheme.hex}25` : 'rgba(255,255,255,0.03)'
+              }}
+            >
+              <div className="flex items-center gap-3">
+                <div
+                  className="size-7 rounded-full shadow-lg border border-white/20 shrink-0"
+                  style={{
+                    backgroundColor: customTheme.hex,
+                    boxShadow: state.activeTheme.id === 'custom' ? `0 0 15px ${customTheme.glow}` : 'none'
+                  }}
+                />
+                <div className="flex flex-col items-start">
+                  <span className="font-bold text-sm" style={{ color: state.activeTheme.textOnSub }}>
+                    {customTheme.name}
+                  </span>
+                  <span className="text-[8px] opacity-40 uppercase tracking-widest" style={{ color: state.activeTheme.textOnSub }}>
+                    Create your own
+                  </span>
+                </div>
+              </div>
+              {state.activeTheme.id === 'custom' && (
+                <span className="material-symbols-outlined text-primary text-xl">tune</span>
+              )}
+            </button>
+
+          {/* Custom Theme Editor */}
+          {state.activeTheme.id === 'custom' && (
+            <div className="mb-4 pt-4 border-t border-b border-white/5 pb-4">
+              <CustomThemeEditor theme={customTheme} onChange={onCustomThemeChange} />
+            </div>
+          )}
+
           <div className="grid grid-cols-1 gap-2 max-h-[240px] overflow-y-auto pr-2 custom-scrollbar">
             {COLOR_THEMES.map((theme) => {
               const isActive = state.activeTheme.id === theme.id;
+
               return (
                 <button
                   key={theme.id}
