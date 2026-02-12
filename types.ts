@@ -27,6 +27,7 @@ export interface ColorTheme {
   friendship: string;     // friendship-color
   glow: string;
   previewImage: string;
+  isCustom?: boolean;
 }
 
 export interface CursorSet {

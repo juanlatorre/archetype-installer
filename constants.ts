@@ -20,6 +20,22 @@ export const COUNTER_STYLES: CounterStyle[] = [
   'None'
 ];
 
+export const DEFAULT_CUSTOM_THEME: ColorTheme = {
+  id: 'custom',
+  name: 'Custom Theme',
+  description: 'Your own custom theme',
+  hex: '#42b9ff',
+  sub: '#1c2328',
+  textOnMain: '#000000',
+  textOnSub: '#ffffff',
+  hpHigh: '#82e026',
+  xp: '#2eb2f8',
+  friendship: '#b61ae8',
+  glow: 'rgba(66, 185, 255, 0.4)',
+  previewImage: 'defaultgame.png',
+  isCustom: true,
+};
+
 export const COLOR_THEMES: ColorTheme[] = [
   { 
     id: 'default', 

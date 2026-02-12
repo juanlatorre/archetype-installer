@@ -7,7 +7,7 @@ import Sidebar from './components/Sidebar';
 import Preview from './components/Preview';
 import Footer from './components/Footer';
 import MobileApp from './components/MobileApp';
-import { COLOR_THEMES, CURSOR_SETS, BUBBLE_SETS, COUNTER_STYLES } from './constants';
+import { COLOR_THEMES, CURSOR_SETS, BUBBLE_SETS, COUNTER_STYLES, DEFAULT_CUSTOM_THEME } from './constants';
 import { AppState, ColorTheme, ThemeShape, CounterStyle, LoginVariant } from './types';
 import {
   getColorsFilename,
@@ -24,8 +24,9 @@ import archetypeInfoData from './archetype-info.json';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'Game' | 'Login'>('Game');
+  const [customTheme, setCustomTheme] = useState<ColorTheme>(DEFAULT_CUSTOM_THEME);
   const [state, setState] = useState<AppState>({
-    activeTheme: COLOR_THEMES[0],
+    activeTheme: COLOR_THEMES[0], // This is now DEFAULT_CUSTOM_THEME if it's the first in list, but let's rely on list order
     activeShape: 'Round',
     activeCursorSet: CURSOR_SETS[0].id,
     activeBubbleSet: BUBBLE_SETS[0].id,
@@ -67,6 +68,13 @@ const App: React.FC = () => {
   const handleCounterStyleChange = (style: CounterStyle) => setState(prev => ({ ...prev, activeCounterStyle: style }));
   const handleLoginVariantChange = (variant: LoginVariant) => setState(prev => ({ ...prev, activeLoginVariant: variant }));
 
+  const handleCustomThemeChange = (theme: ColorTheme) => {
+    setCustomTheme(theme);
+    if (state.activeTheme.id === 'custom') {
+      setState(prev => ({ ...prev, activeTheme: theme }));
+    }
+  };
+
   const handleGenerate = async () => {
     setIsGenerating(true);
 
@@ -76,6 +84,29 @@ const App: React.FC = () => {
       await copyFolderRecursively(zip, 'archetype', 'archetype');
 
       const colorsFilename = getColorsFilename(state.activeTheme.id);
+
+      if (state.activeTheme.id === 'custom') {
+        try {
+          const response = await fetch('/themes/colors/CHOOSE_YOUR_COLORS.xml');
+          if (response.ok) {
+            let xmlContent = await response.text();
+
+            xmlContent = xmlContent
+              .replace(/(<constantDef name="main-color"><color>)[^<]*(<\/color><\/constantDef>)/g, `$1${state.activeTheme.hex}$2`)
+              .replace(/(<constantDef name="sub-color"><color>)[^<]*(<\/color><\/constantDef>)/g, `$1${state.activeTheme.sub}$2`)
+              .replace(/(<constantDef name="font-main-color"><color>)[^<]*(<\/color><\/constantDef>)/g, `$1${state.activeTheme.textOnMain}$2`)
+              .replace(/(<constantDef name="font-sub-color"><color>)[^<]*(<\/color><\/constantDef>)/g, `$1${state.activeTheme.textOnSub}$2`)
+              .replace(/(<constantDef name="hp-high-color"><color>)[^<]*(<\/color><\/constantDef>)/g, `$1${state.activeTheme.hpHigh}$2`)
+              .replace(/(<constantDef name="xp-color"><color>)[^<]*(<\/color><\/constantDef>)/g, `$1${state.activeTheme.xp}$2`)
+              .replace(/(<constantDef name="friendship-color"><color>)[^<]*(<\/color><\/constantDef>)/g, `$1${state.activeTheme.friendship}$2`);
+
+            zip.file('archetype/theme/CHOOSE_YOUR_COLORS.xml', xmlContent);
+          }
+        } catch (e) {
+          console.error("Failed to generate custom colors XML", e);
+        }
+      }
+
       const shapeInclude = getShapeInclude(state.activeShape);
       const shapeAtlas = getShapeAtlas(state.activeShape);
       const loginInclude = getLoginInclude(state.activeLoginVariant);
@@ -173,6 +204,8 @@ const App: React.FC = () => {
           onBubbleChange={handleBubbleSetChange}
           onCounterStyleChange={handleCounterStyleChange}
           onLoginVariantChange={handleLoginVariantChange}
+          customTheme={customTheme}
+          onCustomThemeChange={handleCustomThemeChange}
         />
         
         <Preview 
