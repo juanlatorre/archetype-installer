@@ -17,7 +17,7 @@ import {
   getCursorInclude,
   getBubbleInclude,
   getCounterInclude,
-  copyFolderRecursively
+  fetchBaseTheme
 } from './utils/exportUtils';
 import { getRelativeTime } from './utils/dateUtils';
 import archetypeInfoData from './archetype-info.json';
@@ -71,9 +71,7 @@ const App: React.FC = () => {
     setIsGenerating(true);
 
     try {
-      const zip = new JSZip();
-
-      await copyFolderRecursively(zip, 'archetype', 'archetype');
+      const zip = await fetchBaseTheme();
 
       const colorsFilename = getColorsFilename(state.activeTheme.id);
       const shapeInclude = getShapeInclude(state.activeShape);
@@ -83,21 +81,27 @@ const App: React.FC = () => {
       const bubbleInclude = getBubbleInclude(state.activeBubbleSet);
       const counterInclude = getCounterInclude(state.activeCounterStyle);
 
-      const infoXml = await (await fetch('/archetype/info.xml')).text();
+      const infoXml = await zip.file('archetype/info.xml')?.async('string');
+      if (!infoXml) throw new Error('archetype/info.xml not found');
+
       const modifiedInfoXml = infoXml.replace(
         /sprite_atlas="[^"]*"/,
         `sprite_atlas="${shapeAtlas}"`
       );
       zip.file('archetype/info.xml', modifiedInfoXml);
 
-      const themeXml = await (await fetch('/archetype/theme/theme.xml')).text();
+      const themeXml = await zip.file('archetype/theme/theme.xml')?.async('string');
+      if (!themeXml) throw new Error('archetype/theme/theme.xml not found');
+
       const modifiedThemeXml = themeXml.replace(
         /<include filename="CHOOSE_YOUR_COLORS\.xml"\/>/,
         `<include filename="${colorsFilename}"/>`
       );
       zip.file('archetype/theme/theme.xml', modifiedThemeXml);
 
-      const lookXml = await (await fetch('/archetype/theme/CHOOSE_YOUR_LOOK.xml')).text();
+      const lookXml = await zip.file('archetype/theme/CHOOSE_YOUR_LOOK.xml')?.async('string');
+      if (!lookXml) throw new Error('archetype/theme/CHOOSE_YOUR_LOOK.xml not found');
+
       const modifiedLookXml = lookXml
         .replace(
           /<include filename="assets\/Unova\.xml"\/>/,
@@ -117,7 +121,9 @@ const App: React.FC = () => {
         );
       zip.file('archetype/theme/CHOOSE_YOUR_LOOK.xml', modifiedLookXml);
 
-      const counterXml = await (await fetch('/archetype/theme/CHOOSE_YOUR_COUNTER.xml')).text();
+      const counterXml = await zip.file('archetype/theme/CHOOSE_YOUR_COUNTER.xml')?.async('string');
+      if (!counterXml) throw new Error('archetype/theme/CHOOSE_YOUR_COUNTER.xml not found');
+
       const modifiedCounterXml = counterXml.replace(
         /<include filename="assets\/[^"]*"\/>/,
         `<include filename="assets/${counterInclude}.xml"/>`
