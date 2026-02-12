@@ -1,12 +1,19 @@
 import { ColorTheme } from '../types';
 
+export interface Inset {
+    top: number;
+    left: number;
+    bottom: number;
+    right: number;
+}
+
 export interface ImageDefinition {
   type: string;
   name?: string;
   file?: string;
   xywh?: string;
   tint?: string;
-  inset?: string;
+  inset?: Inset;
   children?: ImageDefinition[];
   ref?: string;
   weightsX?: string;
@@ -41,6 +48,9 @@ export const parseColors = (xmlDoc: Document): Map<string, string> => {
       colors.set(name, color);
     }
   }
+  if (colors.size === 0) {
+      console.warn("parseColors found 0 constantDefs. XML might be invalid or empty.");
+  }
   return colors;
 };
 
@@ -61,7 +71,16 @@ export const parseImages = (xmlDoc: Document, basePath: string): Map<string, Ima
 
     const xywh = node.getAttribute('xywh') || undefined;
     const tint = node.getAttribute('tint') || undefined;
-    const inset = node.getAttribute('inset') || undefined;
+
+    let inset: Inset | undefined;
+    const insetStr = node.getAttribute('inset');
+    if (insetStr) {
+        const parts = insetStr.split(',').map(Number);
+        if (parts.length === 1) inset = { top: parts[0], left: parts[0], bottom: parts[0], right: parts[0] };
+        else if (parts.length === 2) inset = { top: parts[1], left: parts[0], bottom: parts[1], right: parts[0] };
+        else if (parts.length === 4) inset = { top: parts[0], left: parts[1], bottom: parts[2], right: parts[3] };
+    }
+
     const ref = node.getAttribute('ref') || undefined;
     const weightsX = node.getAttribute('weightsX') || undefined;
     const weightsY = node.getAttribute('weightsY') || undefined;
@@ -147,7 +166,6 @@ export const loadThemeColors = async (themeId: string, customThemeOverride?: Col
         // If themeId is 'custom', we start with default blue.
         filename = 'CHOOSE_YOUR_COLORS.xml';
     }
-
     try {
         const xmlDoc = await fetchXML(`/themes/colors/${filename}`);
         const colors = parseColors(xmlDoc);

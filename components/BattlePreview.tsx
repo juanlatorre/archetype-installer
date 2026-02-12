@@ -217,85 +217,133 @@ const BattlePreview: React.FC<BattlePreviewProps> = ({ state }) => {
   const [images, setImages] = useState<Map<string, ImageDefinition>>(new Map());
   const [dimensions, setDimensions] = useState<Map<string, { w: number; h: number }>>(new Map());
   const [processedImages, setProcessedImages] = useState<Map<string, string>>(new Map());
-  const [loading, setLoading] = useState(true);
+  const [colorsLoading, setColorsLoading] = useState(true);
+  const [imagesLoading, setImagesLoading] = useState(true);
 
+  // Load Colors
   useEffect(() => {
     let mounted = true;
     const load = async () => {
-      try {
-        const loadedColors = await loadThemeColors(state.activeTheme.id, state.activeTheme);
-        const { images: loadedImages, dimensions: loadedDimensions } = await loadBattleImages(state.activeShape);
-
-        // Find all unique image definitions (recursive) to process crops
-        const uniqueDefs = new Map<string, ImageDefinition>();
-        const visit = (def: ImageDefinition) => {
-            if (def.file && def.xywh) {
-                const key = `${def.file}:${def.xywh}`;
-                if (!uniqueDefs.has(key)) {
-                    uniqueDefs.set(key, def);
-                }
+        setColorsLoading(true);
+        try {
+            const loadedColors = await loadThemeColors(state.activeTheme.id, state.activeTheme);
+            if (mounted) {
+                setColors(loadedColors);
+                setColorsLoading(false);
             }
-            def.children?.forEach(visit);
-        };
-        loadedImages.forEach(visit);
-
-        const processed = new Map<string, string>();
-        const processingPromises: Promise<void>[] = [];
-
-        uniqueDefs.forEach((def, key) => {
-             processingPromises.push((async () => {
-                 return new Promise<void>((resolve) => {
-                     const img = new Image();
-                     img.crossOrigin = "Anonymous";
-                     img.onload = () => {
-                         const canvas = document.createElement('canvas');
-                         const ctx = canvas.getContext('2d');
-                         if (!ctx) return resolve();
-
-                         let x = 0, y = 0, w = img.naturalWidth, h = img.naturalHeight;
-                         if (def.xywh && def.xywh !== '*') {
-                             const parts = def.xywh.split(',').map(Number);
-                             if (parts.length === 4) {
-                                 [x, y, w, h] = parts;
-                             }
-                         }
-
-                         canvas.width = w;
-                         canvas.height = h;
-                         ctx.drawImage(img, x, y, w, h, 0, 0, w, h);
-
-                         processed.set(key, canvas.toDataURL());
-                         resolve();
-                     };
-                     img.onerror = () => {
-                        console.error(`Failed to process image blob for ${key}`);
-                        resolve();
-                     };
-                     img.src = def.file!;
-                 });
-             })());
-        });
-
-        await Promise.all(processingPromises);
-
-        if (mounted) {
-          setColors(loadedColors);
-          setImages(loadedImages);
-          setDimensions(loadedDimensions);
-          setProcessedImages(processed);
-          setLoading(false);
+        } catch (e) {
+            console.error("Failed to load theme colors", e);
+            if (mounted) setColorsLoading(false);
         }
-      } catch (e) {
-        console.error("Failed to load theme assets", e);
-      }
     };
     load();
     return () => { mounted = false; };
-  }, [state.activeTheme, state.activeShape]);
+  }, [state.activeTheme]);
+
+  // Load Images (Base definitions)
+  useEffect(() => {
+      let mounted = true;
+      const load = async () => {
+          setImagesLoading(true);
+          try {
+              const { images: loadedImages, dimensions: loadedDimensions } = await loadBattleImages(state.activeShape);
+              if (mounted) {
+                  setImages(loadedImages);
+                  setDimensions(loadedDimensions);
+              }
+          } catch (e) {
+              console.error("Failed to load battle images", e);
+              if (mounted) setImagesLoading(false);
+          }
+      };
+      load();
+      return () => { mounted = false; };
+  }, [state.activeShape]);
+
+  // Process Images (Canvas generation) - Depends on 'images' map
+  useEffect(() => {
+      let mounted = true;
+      if (images.size === 0) {
+          if (mounted) setImagesLoading(false);
+          return;
+      }
+
+      const process = async () => {
+          // Find all unique image definitions (recursive) to process crops
+          const uniqueDefs = new Map<string, ImageDefinition>();
+          const visit = (def: ImageDefinition) => {
+              if (def.file && def.xywh) {
+                  const key = `${def.file}:${def.xywh}`;
+                  if (!uniqueDefs.has(key)) {
+                      uniqueDefs.set(key, def);
+                  }
+              }
+              def.children?.forEach(visit);
+          };
+          images.forEach(visit);
+
+          const processed = new Map<string, string>();
+          const processingPromises: Promise<void>[] = [];
+
+          uniqueDefs.forEach((def, key) => {
+              processingPromises.push((async () => {
+                  return new Promise<void>((resolve) => {
+                      const img = new Image();
+                      img.crossOrigin = "Anonymous";
+                      img.onload = () => {
+                          try {
+                              const canvas = document.createElement('canvas');
+                              const ctx = canvas.getContext('2d');
+                              if (!ctx) {
+                                  console.error("Failed to get canvas context");
+                                  return resolve();
+                              }
+
+                              let x = 0, y = 0, w = img.naturalWidth, h = img.naturalHeight;
+                              if (def.xywh && def.xywh !== '*') {
+                                  const parts = def.xywh.split(',').map(Number);
+                                  if (parts.length === 4) {
+                                      [x, y, w, h] = parts;
+                                  }
+                              }
+
+                              if (w > 0 && h > 0) {
+                                  canvas.width = w;
+                                  canvas.height = h;
+                                  ctx.drawImage(img, x, y, w, h, 0, 0, w, h);
+                                  processed.set(key, canvas.toDataURL());
+                              } else {
+                                  console.warn(`Invalid dimensions for ${key}: ${w}x${h}`);
+                              }
+                          } catch (err) {
+                              console.error(`Error processing image canvas for ${key}`, err);
+                          }
+                          resolve();
+                      };
+                      img.onerror = (e) => {
+                          console.error(`Failed to load image source for ${key}: ${def.file}`, e);
+                          resolve();
+                      };
+                      img.src = def.file!;
+                  });
+              })());
+          });
+
+          await Promise.all(processingPromises);
+
+          if (mounted) {
+              setProcessedImages(processed);
+              setImagesLoading(false);
+          }
+      };
+
+      process();
+      return () => { mounted = false; };
+  }, [images]);
 
   const contextValue = useMemo(() => ({ colors, images, dimensions, processedImages }), [colors, images, dimensions, processedImages]);
 
-  if (loading) {
+  if (imagesLoading && images.size === 0) {
     return <div className="flex items-center justify-center h-full text-white/50">Loading theme assets...</div>;
   }
 
