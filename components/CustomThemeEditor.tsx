@@ -62,12 +62,19 @@ const CustomThemeEditor: React.FC<CustomThemeEditorProps> = ({ theme, onChange }
           <div key={key} className="flex items-center justify-between p-3 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 transition-colors">
              <div className="flex flex-col">
                <span className="text-xs font-bold" style={{ color: theme.textOnSub }}>{label}</span>
-               <span className="text-[10px] opacity-50 uppercase font-mono" style={{ color: theme.textOnSub }}>{theme[key] as string}</span>
+               <input
+                 type="text"
+                 value={theme[key] as string}
+                 onChange={(e) => handleChange(key, e.target.value)}
+                 className="w-20 bg-transparent text-[10px] opacity-70 uppercase font-mono border-b border-white/10 focus:border-white/50 focus:opacity-100 outline-none transition-all"
+                 style={{ color: theme.textOnSub }}
+                 spellCheck={false}
+               />
              </div>
              <div className="relative size-8 rounded-full overflow-hidden border border-white/20 shadow-lg shrink-0">
                <input
                  type="color"
-                 value={theme[key] as string}
+                 value={/^#[0-9A-F]{6}$/i.test(theme[key] as string) ? (theme[key] as string) : '#000000'}
                  onChange={(e) => handleChange(key, e.target.value)}
                  className="absolute -top-1/2 -left-1/2 w-[200%] h-[200%] p-0 cursor-pointer border-0"
                />
