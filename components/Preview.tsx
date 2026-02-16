@@ -1,6 +1,6 @@
 import React from "react";
 import { AppState } from "../types";
-import BattlePreview from "./BattlePreview";
+import GamePreview from "./GamePreview";
 
 interface PreviewProps {
   state: AppState;
@@ -75,7 +75,7 @@ const Preview: React.FC<PreviewProps> = ({ state, activeTab, onTabChange }) => {
         <div className="flex-1 relative overflow-hidden bg-black">
           <div className="absolute inset-0 animate-in fade-in duration-700">
             {activeTab === "Game" ? (
-              <BattlePreview state={state} />
+              <GamePreview state={state} />
             ) : (
               <div
                 className="absolute inset-0 z-40 pointer-events-none p-6 flex flex-col justify-between"
