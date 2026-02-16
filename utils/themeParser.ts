@@ -48,9 +48,6 @@ export const parseColors = (xmlDoc: Document): Map<string, string> => {
       colors.set(name, color);
     }
   }
-  if (colors.size === 0) {
-      console.warn("parseColors found 0 constantDefs. XML might be invalid or empty.");
-  }
   return colors;
 };
 
@@ -64,6 +61,7 @@ export const parseImages = (xmlDoc: Document, basePath: string): Map<string, Ima
     const name = node.getAttribute('name') || undefined;
     let file = node.getAttribute('file');
     if (file) {
+        // Assume file path is relative to the XML's directory (basePath)
         file = `${basePath}/${file}`;
     } else {
         file = parentFile;
@@ -78,7 +76,7 @@ export const parseImages = (xmlDoc: Document, basePath: string): Map<string, Ima
         const parts = insetStr.split(',').map(Number);
         if (parts.length === 1) inset = { top: parts[0], left: parts[0], bottom: parts[0], right: parts[0] };
         else if (parts.length === 2) inset = { top: parts[1], left: parts[0], bottom: parts[1], right: parts[0] };
-        else if (parts.length === 4) inset = { top: parts[0], left: parts[1], bottom: parts[2], right: parts[3] };
+        else if (parts.length === 4) inset = { top: parts[0], left: parts[3], bottom: parts[2], right: parts[1] };
     }
 
     const ref = node.getAttribute('ref') || undefined;
@@ -129,7 +127,7 @@ export const parseImages = (xmlDoc: Document, basePath: string): Map<string, Ima
 
     // <images> tag is just a container and provider of 'file' context
     if (tagName === 'images') {
-        return null; // Don't return the container itself as a child of themes
+        return null;
     }
 
     return def;
@@ -162,12 +160,10 @@ export const loadThemeColors = async (themeId: string, customThemeOverride?: Col
     if (map[themeId]) {
         filename = map[themeId];
     } else if (themeId !== 'custom') {
-        // Fallback for unknown themes, though map should cover all.
-        // If themeId is 'custom', we start with default blue.
         filename = 'CHOOSE_YOUR_COLORS.xml';
     }
     try {
-        const xmlDoc = await fetchXML(`/themes/colors/${filename}`);
+        const xmlDoc = await fetchXML(`/archetype/theme/${filename}`);
         const colors = parseColors(xmlDoc);
 
         if (themeId === 'custom' && customThemeOverride) {
@@ -178,18 +174,18 @@ export const loadThemeColors = async (themeId: string, customThemeOverride?: Col
             colors.set('hp-high-color', customThemeOverride.hpHigh);
             colors.set('xp-color', customThemeOverride.xp);
             colors.set('friendship-color', customThemeOverride.friendship);
-
-            // Calculate derived colors if needed, but for now we rely on the base XML values for other colors.
-            // Some themes might have different 'button-color' etc.
-            // If the user started customizing from 'Frostbite', we should ideally load 'Frostbite' as base.
-            // But the current app implementation starts with 'Default' (blue) for custom theme unless specified otherwise.
-            // The `DEFAULT_CUSTOM_THEME` in constants.ts seems to be based on the Blue theme.
         }
 
         return colors;
     } catch (e) {
-        console.error("Error loading theme colors:", e);
-        return new Map();
+        try {
+             const xmlDoc = await fetchXML(`/themes/colors/${filename}`);
+             const colors = parseColors(xmlDoc);
+             return colors;
+        } catch (e2) {
+             console.error("Error loading theme colors:", e);
+             return new Map();
+        }
     }
 };
 
@@ -197,38 +193,49 @@ export const loadBattleImages = async (shape: string = 'Round'): Promise<{ image
     const allImages = new Map<string, ImageDefinition>();
     const fileSet = new Set<string>();
 
-    // Load Shape XML (Round.xml / Sharp.xml)
+    const themeRoot = '/archetype/theme';
+
+    // 1. Load Main Theme XML to find includes
     try {
-        const shapeFile = shape === 'Round' ? 'Round.xml' : 'Sharp.xml';
-        const shapePath = `/archetype/theme/assets`;
-        const xmlDoc = await fetchXML(`${shapePath}/${shapeFile}`);
-        const images = parseImages(xmlDoc, shapePath);
-        images.forEach((v, k) => {
-            allImages.set(k, v);
-            if (v.file) fileSet.add(v.file);
-        });
-    } catch (e) {
-        console.error("Error loading shape XML:", e);
-    }
+        const themeXmlDoc = await fetchXML(`${themeRoot}/theme.xml`);
+        const root = themeXmlDoc.documentElement;
+        const includes = root.getElementsByTagName('include');
 
-    // Load Main UI
-    const basePath = '/archetype/theme/assets/jaejGI7pIp';
-    const files = [
-        'MAsXAmMZ9W.xml', // Main UI definitions
-        '93mJfhxn2o.xml'  // Battle specific definitions
-    ];
+        const filesToLoad: string[] = [];
 
-    for (const file of files) {
-        try {
-            const xmlDoc = await fetchXML(`${basePath}/${file}`);
-            const images = parseImages(xmlDoc, basePath);
-            images.forEach((v, k) => {
-                allImages.set(k, v);
-                if (v.file) fileSet.add(v.file);
-            });
-        } catch (e) {
-            console.error(`Error loading ${file}:`, e);
+        for (let i = 0; i < includes.length; i++) {
+            const filename = includes[i].getAttribute('filename');
+            if (filename) {
+                filesToLoad.push(filename);
+            }
         }
+
+        const shapeFile = `assets/${shape}.xml`;
+        filesToLoad.push(shapeFile);
+
+        const uniqueFiles = Array.from(new Set(filesToLoad));
+
+        await Promise.all(uniqueFiles.map(async (file) => {
+            try {
+                // Determine full path and base path for this file
+                const fullPath = `${themeRoot}/${file}`;
+                const lastSlash = fullPath.lastIndexOf('/');
+                const basePath = lastSlash !== -1 ? fullPath.substring(0, lastSlash) : themeRoot;
+
+                const xmlDoc = await fetchXML(fullPath);
+
+                const images = parseImages(xmlDoc, basePath);
+                images.forEach((v, k) => {
+                    allImages.set(k, v);
+                    if (v.file) fileSet.add(v.file);
+                });
+            } catch (e) {
+                // console.warn(`Skipping optional or missing file: ${file}`);
+            }
+        }));
+
+    } catch (e) {
+        console.error("Error loading theme.xml:", e);
     }
 
     // Recursively find files in nested children (composed)
@@ -242,13 +249,14 @@ export const loadBattleImages = async (shape: string = 'Round'): Promise<{ image
     await Promise.all(Array.from(fileSet).map(async (src) => {
         return new Promise<void>((resolve) => {
             const img = new Image();
+            img.crossOrigin = "Anonymous";
             img.onload = () => {
                 dimensions.set(src, { w: img.naturalWidth, h: img.naturalHeight });
                 resolve();
             };
             img.onerror = () => {
-                console.error(`Failed to load image: ${src}`);
-                resolve(); // resolve anyway to not block
+                // console.warn(`Failed to load image: ${src}`);
+                resolve();
             };
             img.src = src;
         });

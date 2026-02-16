@@ -1,13 +1,5 @@
 import React, { useContext, useMemo } from 'react';
 import { ImageDefinition } from '../utils/themeParser';
-
-// We need to define the context shape, but since we are extracting this,
-// we'll need to export the Context from somewhere or define it here and export it.
-// For simplicity, let's define a Context provider in a separate file or
-// keep it simple and pass props if we don't want to over-engineer.
-// However, the Context approach was good for avoiding prop drilling of 'images' and 'colors'.
-
-// Let's create a ThemeContext file.
 import { ThemeContext } from './ThemeContext';
 
 interface ThemedImageProps {
@@ -40,24 +32,35 @@ const ThemedImage: React.FC<ThemedImageProps> = ({ name, def: propDef, style, cl
   // Handle Alias
   if (def.type === 'alias' && def.ref) {
       const refDef = images.get(def.ref);
-      if (!refDef) return null;
+
+      // If alias has inset, we usually want to wrap it in a container that applies the inset,
+      // OR pass the inset down if possible.
+      // But standard alias behavior often implies "render this thing here".
+
+      const containerStyle: React.CSSProperties = {
+          position: 'absolute',
+          top: def.inset?.top !== undefined ? def.inset.top : 0,
+          left: def.inset?.left !== undefined ? def.inset.left : 0,
+          right: def.inset?.right !== undefined ? def.inset.right : 0,
+          bottom: def.inset?.bottom !== undefined ? def.inset.bottom : 0,
+          width: width, // Inherit or override
+          height: height,
+          ...style
+      };
+
+      // If alias overrides tint
+      const childDef = refDef ? { ...refDef, tint: def.tint || refDef.tint } : undefined;
+
+      if (!childDef) {
+          // If ref is 'none' or missing, render nothing (or just the container if it has styles?)
+          if (def.ref === 'none') return null;
+          return null;
+      }
 
       return (
-          <div
-            className={className}
-            style={{
-                position: 'absolute',
-                top: def.inset?.top,
-                right: def.inset?.right,
-                bottom: def.inset?.bottom,
-                left: def.inset?.left,
-                width: width || '100%',
-                height: height || '100%',
-                ...style
-            }}
-          >
+          <div className={className} style={containerStyle}>
               <ThemedImage
-                def={{ ...refDef, tint: def.tint || refDef.tint }}
+                def={childDef}
                 width="100%"
                 height="100%"
               />
@@ -67,33 +70,131 @@ const ThemedImage: React.FC<ThemedImageProps> = ({ name, def: propDef, style, cl
 
   // Handle Composed / Grid
   if (def.type === 'composed' || def.type === 'grid') {
+      const isGrid = def.type === 'grid';
+      const isComposed = def.type === 'composed';
+
+      const containerStyle: React.CSSProperties = {
+          position: 'relative',
+          width: width || '100%',
+          height: height || '100%',
+          ...style
+      };
+
+      if (isGrid) {
+          containerStyle.display = 'flex';
+          if (def.weightsX) {
+              containerStyle.flexDirection = 'row';
+          } else if (def.weightsY) {
+              containerStyle.flexDirection = 'column';
+          }
+          // If both or neither, row is often default for simple grids, but usually weights are present.
+      }
+
+      const weights = def.weightsX
+          ? def.weightsX.split(',').map(Number)
+          : def.weightsY
+              ? def.weightsY.split(',').map(Number)
+              : [];
+
       return (
-          <div
-            className={className}
-            style={{
-                position: 'relative',
-                width: width || '100%',
-                height: height || '100%',
-                ...style
-            }}
-          >
-              {def.children?.map((child, idx) => (
-                  <ThemedImage
-                    key={idx}
-                    def={child}
-                    style={{
-                        position: 'absolute',
-                        top: child.inset?.top || 0,
-                        left: child.inset?.left || 0,
-                        right: child.inset?.right !== undefined ? child.inset.right : undefined,
-                        bottom: child.inset?.bottom !== undefined ? child.inset.bottom : undefined,
-                        width: child.sizeOverwriteH ? parseInt(child.sizeOverwriteH) : undefined,
-                        height: child.sizeOverwriteV ? parseInt(child.sizeOverwriteV) : undefined,
-                    }}
-                  />
-              ))}
+          <div className={className} style={containerStyle}>
+              {def.children?.map((child, idx) => {
+                  const weight = weights[idx] !== undefined ? weights[idx] : 0;
+                  const childStyle: React.CSSProperties = {};
+
+                  // Propagate tint from parent composed/grid to child if child doesn't have one
+                  const childDef = { ...child, tint: child.tint || def.tint };
+
+                  if (isComposed) {
+                      childStyle.position = 'absolute';
+
+                      // Inset handling
+                      if (child.inset) {
+                          childStyle.top = child.inset.top;
+                          childStyle.left = child.inset.left;
+                          childStyle.right = child.inset.right;
+                          childStyle.bottom = child.inset.bottom;
+                      } else {
+                          // Default to filling parent if not specified?
+                          // Or should we let it be auto?
+                          // "composed" usually means layers filling the parent.
+                          childStyle.top = 0;
+                          childStyle.left = 0;
+                          childStyle.right = 0;
+                          childStyle.bottom = 0;
+                      }
+
+                      // Size Overwrites
+                      if (child.sizeOverwriteH) {
+                          childStyle.width = parseInt(child.sizeOverwriteH);
+                          childStyle.right = undefined; // Fixed width, so don't anchor right
+                          // If inset.left is missing, maybe center? But usually left is 0.
+                      }
+                      if (child.sizeOverwriteV) {
+                          childStyle.height = parseInt(child.sizeOverwriteV);
+                          childStyle.bottom = undefined;
+                      }
+                  } else if (isGrid) {
+                      // Grid Item Logic
+                      childStyle.position = 'relative';
+                      childStyle.flexGrow = weight;
+
+                      if (weight === 0) {
+                          childStyle.flexShrink = 0;
+                          // If it's a fixed size item (weight 0), it might have sizeOverwrite
+                          if (child.sizeOverwriteH) childStyle.width = parseInt(child.sizeOverwriteH);
+                          if (child.sizeOverwriteV) childStyle.height = parseInt(child.sizeOverwriteV);
+                          // Or it might depend on content (natural image size)
+                      } else {
+                          // Flexible item
+                          childStyle.flexBasis = 0;
+                          childStyle.minWidth = 0;
+                          childStyle.minHeight = 0;
+                      }
+
+                      // Inset in grid often implies margin/padding
+                      if (child.inset) {
+                          childStyle.marginTop = child.inset.top;
+                          childStyle.marginLeft = child.inset.left;
+                          childStyle.marginBottom = child.inset.bottom;
+                          childStyle.marginRight = child.inset.right;
+                      }
+                  }
+
+                  return (
+                      <ThemedImage
+                        key={idx}
+                        def={childDef}
+                        style={childStyle}
+                      />
+                  );
+              })}
           </div>
       );
+  }
+
+  // Handle Select (Render first matching child - simplified to first child for preview)
+  if (def.type === 'select') {
+      // In a real engine, we'd check 'if' conditions (hover, disabled, etc.)
+      // For preview, we mostly want the default state.
+      // Often the last child is the default or 'fallback'.
+      // OR there's a child with no 'if' condition.
+
+      let selectedChild = def.children?.[def.children.length - 1]; // Default to last?
+
+      // Try to find one without 'if', or where 'if' is 'default' (not standard XML but logic wise)
+      // Actually, many selects have: <alias ... if="hover"/> <alias .../>
+      // The one without 'if' is the default.
+
+      const defaultChild = def.children?.find(c => !c.if);
+      if (defaultChild) selectedChild = defaultChild;
+
+      if (!selectedChild) return null;
+
+      // Propagate tint
+      const childDef = { ...selectedChild, tint: selectedChild.tint || def.tint };
+
+      return <ThemedImage def={childDef} style={style} className={className} width={width} height={height} />;
   }
 
   // Handle Area (Leaf node with image)
@@ -150,21 +251,27 @@ const ThemedImage: React.FC<ThemedImageProps> = ({ name, def: propDef, style, cl
                    bgStyle.backgroundRepeat = 'no-repeat';
                    // Fallback natural size if container doesn't set width/height
                    if (xywhParts) {
-                       bgStyle.width = xywhParts[2];
-                       bgStyle.height = xywhParts[3];
+                    //    bgStyle.width = xywhParts[2];
+                    //    bgStyle.height = xywhParts[3];
+                       // Don't force width/height here if parent controls it,
+                       // but for 'area' type, it often defines the size.
                    }
               } else if (xywhParts) {
                   // Just a region, treat as fill using atlas (can't stretch safely)
                   const [x, y, w, h] = xywhParts;
                   bgStyle.backgroundImage = `url(${def.file})`;
                   bgStyle.backgroundPosition = `-${x}px -${y}px`;
+                  // If we use backgroundPosition, we assume the container is exactly w x h
+                  // But ThemedImage props might say '100%'.
+                  // Standard CSS sprites don't stretch.
+                  // For now, let's assume 'contain' or 'cover' isn't what we want for sprites.
                   bgStyle.width = w;
                   bgStyle.height = h;
                   bgStyle.backgroundRepeat = 'no-repeat';
               } else {
                    // Whole image
                    bgStyle.backgroundImage = `url(${def.file})`;
-                   bgStyle.backgroundSize = 'contain';
+                   bgStyle.backgroundSize = 'contain'; // or 100% 100%?
                    bgStyle.backgroundRepeat = 'no-repeat';
               }
           }
@@ -197,11 +304,6 @@ const ThemedImage: React.FC<ThemedImageProps> = ({ name, def: propDef, style, cl
       );
 
       return content;
-  }
-
-  // Select - Render first child
-  if (def.type === 'select' && def.children?.[0]) {
-      return <ThemedImage def={def.children[0]} style={style} className={className} width={width} height={height} />;
   }
 
   return null;
