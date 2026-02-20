@@ -53,11 +53,42 @@ export function getCounterInclude(counterStyle: CounterStyle): string {
   return counterStyle;
 }
 
+async function fetchAndAddFile(zip: JSZip, url: string, pathInZip: string) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Failed to fetch ${url}`);
+    const blob = await response.blob();
+    zip.file(pathInZip, blob);
+  } catch (error) {
+    console.error(`Error adding file ${pathInZip} to zip:`, error);
+    // Proceeding without the file might be better than failing the whole download,
+    // but for fonts it's critical. However, throwing here stops the whole process.
+    throw error;
+  }
+}
+
 export async function fetchBaseTheme(): Promise<JSZip> {
+  // Fetch the lightweight base theme zip
   const response = await fetch('/base-theme.zip');
   if (!response.ok) {
     throw new Error(`Failed to fetch base theme: ${response.statusText}`);
   }
   const blob = await response.blob();
-  return JSZip.loadAsync(blob);
+  const zip = await JSZip.loadAsync(blob);
+
+  // Fetch and add the excluded fonts
+  // These are hosted as static files in public/archetype/...
+  // We need to fetch them and add them to the zip structure
+  const fontBaseUrl = '/archetype/theme/assets/jaejGI7pIp/fonts';
+  const fonts = [
+    'NotoSansCJK-Bold.ttc',
+    'NotoSansCJK-Medium.ttc',
+    'battle.ttf'
+  ];
+
+  await Promise.all(fonts.map(font =>
+    fetchAndAddFile(zip, `${fontBaseUrl}/${font}`, `archetype/theme/assets/jaejGI7pIp/fonts/${font}`)
+  ));
+
+  return zip;
 }

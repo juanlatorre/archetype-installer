@@ -13,7 +13,8 @@ const outputZipPath = path.join(rootDir, 'public/base-theme.zip');
 
 const zip = new JSZip();
 
-// Files to exclude to reduce zip size
+// Exclude large fonts from the base-theme.zip
+// These will be fetched and added client-side to save bandwidth on the zip download
 const EXCLUDED_FILES = [
   'NotoSansCJK-Bold.ttc',
   'NotoSansCJK-Medium.ttc',
