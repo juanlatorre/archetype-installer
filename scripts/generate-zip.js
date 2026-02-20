@@ -13,12 +13,19 @@ const outputZipPath = path.join(rootDir, 'public/base-theme.zip');
 
 const zip = new JSZip();
 
+// Files to exclude to reduce zip size
+const EXCLUDED_FILES = [
+  'NotoSansCJK-Bold.ttc',
+  'NotoSansCJK-Medium.ttc',
+  'battle.ttf'
+];
+
 function addFilesToZip(dir, zipFolder) {
   if (!fs.existsSync(dir)) return;
 
   const files = fs.readdirSync(dir);
   for (const file of files) {
-    if (file === '.DS_Store') continue;
+    if (file === '.DS_Store' || EXCLUDED_FILES.includes(file)) continue;
 
     const filePath = path.join(dir, file);
     const stat = fs.statSync(filePath);
@@ -64,7 +71,14 @@ async function generateZip() {
   // Generate the zip file
   console.log('Writing zip file...');
 
-  zip.generateNodeStream({ type: 'nodebuffer', streamFiles: true })
+  zip.generateNodeStream({
+    type: 'nodebuffer',
+    streamFiles: true,
+    compression: 'DEFLATE',
+    compressionOptions: {
+      level: 9
+    }
+  })
     .pipe(fs.createWriteStream(outputZipPath))
     .on('finish', function () {
         console.log(`base-theme.zip created at ${outputZipPath}`);
