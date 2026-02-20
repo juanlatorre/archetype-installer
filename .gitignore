@@ -30,7 +30,6 @@ dist-ssr
 # Auto-generated/fetched files
 utils/archetypeFiles.json
 git-info.json
-archetype-info.json
 metadata.json
 public/base-theme.zip
 

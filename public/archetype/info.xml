@@ -7,7 +7,7 @@ sprite_atlas="icons/round_outlined/main.atlas"
 sprite_atlas="icons/default/main.atlas"
 -->
 <resource name="Archetype Theme" version="1.5" description="Total PokeMMO visual overhaul including animations and customizable options." author="nurver, realmadrid1809,&#10;AnonymousPoke, DucksAreBad" weblink="https://forums.pokemmo.com/index.php?/topic/149494-gui-archetype">
-    <themes theme_revision="6">
+    <themes theme_revision="7">
         <theme path="theme/" name="Archetype" is_mobile="false" sprite_atlas="icons/round/main.atlas"/>
     </themes>
 </resource>

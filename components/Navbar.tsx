@@ -8,6 +8,8 @@ interface NavbarProps {
     commit: string;
     time: string;
     repoUrl: string;
+    loading?: boolean;
+    error?: boolean;
   };
 }
 
@@ -54,7 +56,7 @@ const Navbar: React.FC<NavbarProps> = ({ state, archetypeInfo }) => {
           >
             With &lt;3 by juanlatorre
           </a>
-          {archetypeInfo && (
+          {archetypeInfo && !archetypeInfo.loading && !archetypeInfo.error && (
             <>
               <span className="text-sm opacity-60" style={{ color: 'var(--text-on-sub)' }}>•</span>
               <a
@@ -66,6 +68,28 @@ const Navbar: React.FC<NavbarProps> = ({ state, archetypeInfo }) => {
               >
                 Using commit {archetypeInfo.commit.slice(0, 7)} from {archetypeInfo.time}
               </a>
+            </>
+          )}
+          {archetypeInfo?.loading && (
+            <>
+              <span className="text-sm opacity-60" style={{ color: 'var(--text-on-sub)' }}>•</span>
+              <span
+                className="text-sm font-medium opacity-60"
+                style={{ color: 'var(--text-on-sub)' }}
+              >
+                Fetching latest commit...
+              </span>
+            </>
+          )}
+          {archetypeInfo?.error && (
+            <>
+              <span className="text-sm opacity-60" style={{ color: 'var(--text-on-sub)' }}>•</span>
+              <span
+                className="text-sm font-medium opacity-60"
+                style={{ color: 'var(--text-on-sub)' }}
+              >
+                Unable to fetch commit info
+              </span>
             </>
           )}
         </nav>

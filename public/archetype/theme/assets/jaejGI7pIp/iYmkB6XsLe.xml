@@ -87,6 +87,7 @@
 				</theme>
 			</theme>
 		</theme>
+		<!-- Loaded ROMs text -->
 		<theme name="label" ref="label">
 			<param name="font"><font>alphabeta-border</font></param>
 		</theme>
@@ -687,7 +688,7 @@
 				<theme name="button" ref="button">
 					<param name="border"><border>10</border></param>
 					<param name=""><image>button-npc.*</image></param>
-					<param name="font"><font>pb-dark-highlight-button</font></param>
+					<param name="font"><font>symbols-white</font></param>
 				</theme>
 				<theme name="button-ok" ref="button">
 					<param name="border"><border>0</border></param>
@@ -1260,12 +1261,24 @@
 		</theme>
 	</theme>
 
+	<!-- deprecated
 	<theme name="changelog-frame" ref="resizableframe">
 		<param name="background"><image>none</image></param>
 		<theme name="title" ref="-defaults">
 			<param name="textAlignment"><enum type="alignment">center</enum></param>
 			<param name="font"><font>title-font</font></param>
-		</theme>
+		</theme>-->
+		
+	<theme name="changelog-frame" ref="resizableframe">
+		<param name="background"><image>none</image></param>
+    <theme name="button" ref="label">
+      <param name="background"><image>ui-button.background</image></param>
+      <param name="border"><border>5</border></param>
+      <param name="font"><font>alphabeta-highlight-button</font></param>
+      <param name="minWidth"><int>250</int></param>
+      <param name="maxWidth"><int>250</int></param>
+    </theme>
+		 
 		<theme name="dialoglayout" ref="-defaults">
 			<param name="defaultGap"><dimension>5,5</dimension></param>
 			<param name="smallGap"><dimension>8,8</dimension></param>
@@ -1273,11 +1286,11 @@
 			<param name="largeGap"><dimension>15,15</dimension></param>
 			<param name="namedGaps"><map/></param>
 			<param name="border"><border>0,5,5,5</border></param>
-			<theme name="button" ref="label">
+			<!--<theme name="button" ref="label">
 				<param name="background"><image>label2.background</image></param>
 				<param name="border"><border>5</border></param>
 				<param name="font"><font>alphabeta</font></param>
-			</theme>
+			</theme>-->
 			<theme name="faq-content">
 				<param name="background"><image>label1.background</image></param>
 				<param name="overlay"><image>none</image></param>

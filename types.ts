@@ -64,5 +64,7 @@ export interface AppState {
     commit: string;
     time: string;
     repoUrl: string;
+    loading?: boolean;
+    error?: boolean;
   };
 }

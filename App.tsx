@@ -20,21 +20,34 @@ import {
   fetchBaseTheme
 } from './utils/exportUtils';
 import { getRelativeTime } from './utils/dateUtils';
-import archetypeInfoData from './archetype-info.json';
+
+const CACHE_KEY = 'archetype-commit-info';
+const CACHE_DURATION_MS = 15 * 60 * 1000;
+const REPO_URL = 'https://github.com/ssjshields/archetype';
+const API_URL = 'https://api.github.com/repos/ssjshields/archetype/commits/main';
+
+interface CachedCommitInfo {
+  commit: string;
+  commitDate: string;
+  cachedAt: number;
+}
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'Game' | 'Login'>('Game');
   const [customTheme, setCustomTheme] = useState<ColorTheme>(DEFAULT_CUSTOM_THEME);
   const [state, setState] = useState<AppState>({
-    activeTheme: COLOR_THEMES[0], // This is now DEFAULT_CUSTOM_THEME if it's the first in list, but let's rely on list order
+    activeTheme: COLOR_THEMES[0],
     activeShape: 'Round',
     activeCursorSet: CURSOR_SETS[0].id,
     activeBubbleSet: BUBBLE_SETS[0].id,
     activeCounterStyle: COUNTER_STYLES[0],
     activeLoginVariant: 'Unova',
     archetypeInfo: {
-      ...archetypeInfoData,
-      time: getRelativeTime(archetypeInfoData.commitDate)
+      commit: '',
+      time: '',
+      repoUrl: REPO_URL,
+      loading: true,
+      error: false
     }
   });
 
@@ -49,6 +62,72 @@ const App: React.FC = () => {
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    const fetchCommitInfo = async () => {
+      try {
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+          const parsed: CachedCommitInfo = JSON.parse(cached);
+          const isFresh = Date.now() - parsed.cachedAt < CACHE_DURATION_MS;
+          if (isFresh) {
+            setState(prev => ({
+              ...prev,
+              archetypeInfo: {
+                commit: parsed.commit,
+                time: getRelativeTime(parsed.commitDate),
+                repoUrl: REPO_URL,
+                loading: false,
+                error: false
+              }
+            }));
+            return;
+          }
+        }
+
+        const response = await fetch(API_URL);
+        if (!response.ok) throw new Error('Failed to fetch');
+
+        const data = await response.json();
+        const commit = data.sha;
+        const commitDate = data.commit?.author?.date;
+
+        if (!commit || !commitDate) throw new Error('Invalid response');
+
+        const cacheData: CachedCommitInfo = {
+          commit,
+          commitDate,
+          cachedAt: Date.now()
+        };
+        localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+
+        setState(prev => ({
+          ...prev,
+          archetypeInfo: {
+            commit,
+            time: getRelativeTime(commitDate),
+            repoUrl: REPO_URL,
+            loading: false,
+            error: false
+          }
+        }));
+      } catch (error) {
+        console.error('Failed to fetch commit info:', error);
+        setState(prev => ({
+          ...prev,
+          archetypeInfo: {
+            commit: '',
+            time: '',
+            repoUrl: REPO_URL,
+            loading: false,
+            error: true
+          }
+        }));
+      }
+    };
+
+    fetchCommitInfo();
   }, []);
 
   useEffect(() => {
