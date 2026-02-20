@@ -21,7 +21,7 @@ import {
 } from './utils/exportUtils';
 import { getRelativeTime } from './utils/dateUtils';
 
-const CACHE_KEY = 'archetype-commit-info';
+const CACHE_KEY = 'archetype-commit-info-v2';
 const CACHE_DURATION_MS = 15 * 60 * 1000;
 const REPO_URL = 'https://github.com/ssjshields/archetype';
 const API_URL = 'https://api.github.com/repos/ssjshields/archetype/commits/112225-beta';
