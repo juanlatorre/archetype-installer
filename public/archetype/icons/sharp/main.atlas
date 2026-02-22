@@ -1,44 +1,8 @@
-
 main.png
 size: 1024, 512
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-BPSprite
-  rotate: false
-  xy: 106, 2
-  size: 24, 24
-  orig: 24, 24
-  offset: 0, 0
-  index: -1
-ClockSprite
-  rotate: false
-  xy: 132, 2
-  size: 24, 24
-  orig: 24, 24
-  offset: 0, 0
-  index: -1
-CoinSprite
-  rotate: false
-  xy: 380, 83
-  size: 24, 24
-  orig: 24, 24
-  offset: 0, 0
-  index: -1
-HiddenAbility
-  rotate: false
-  xy: 720, 171
-  size: 24, 24
-  orig: 24, 24
-  offset: 0, 0
-  index: -1
-HiddenAbilitySmall
-  rotate: false
-  xy: 609, 79
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
 addon_flags
   rotate: false
   xy: 855, 211
@@ -165,6 +129,13 @@ black-bg
   orig: 6, 6
   offset: 0, 0
   index: -1
+BPSprite
+  rotate: false
+  xy: 106, 2
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
 cancel
   rotate: false
   xy: 772, 172
@@ -196,6 +167,20 @@ clock-morning
 clock-sun
   rotate: false
   xy: 406, 108
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+ClockSprite
+  rotate: false
+  xy: 132, 2
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+CoinSprite
+  rotate: false
+  xy: 380, 83
   size: 24, 24
   orig: 24, 24
   offset: 0, 0
@@ -235,13 +220,6 @@ flag_el
   orig: 16, 11
   offset: 0, 0
   index: -1
-flag_gr
-  rotate: false
-  xy: 905, 214
-  size: 16, 11
-  orig: 16, 11
-  offset: 0, 0
-  index: -1
 flag_en
   rotate: false
   xy: 172, 341
@@ -266,6 +244,13 @@ flag_fil
 flag_fr
   rotate: false
   xy: 720, 158
+  size: 16, 11
+  orig: 16, 11
+  offset: 0, 0
+  index: -1
+flag_gr
+  rotate: false
+  xy: 905, 214
   size: 16, 11
   orig: 16, 11
   offset: 0, 0
@@ -331,6 +316,20 @@ flag_tr
   xy: 993, 251
   size: 16, 11
   orig: 16, 11
+  offset: 0, 0
+  index: -1
+HiddenAbility
+  rotate: false
+  xy: 720, 171
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+HiddenAbilitySmall
+  rotate: false
+  xy: 609, 79
+  size: 16, 16
+  orig: 16, 16
   offset: 0, 0
   index: -1
 icon_adm
@@ -704,6 +703,55 @@ monster_type_0_zh
   orig: 49, 14
   offset: 0, 0
   index: -1
+monster_type_1_de
+  rotate: false
+  xy: 379, 278
+  size: 49, 14
+  orig: 49, 14
+  offset: 0, 0
+  index: -1
+monster_type_1_en
+  rotate: false
+  xy: 430, 277
+  size: 49, 14
+  orig: 49, 14
+  offset: 0, 0
+  index: -1
+monster_type_1_es
+  rotate: false
+  xy: 481, 277
+  size: 49, 14
+  orig: 49, 14
+  offset: 0, 0
+  index: -1
+monster_type_1_fr
+  rotate: false
+  xy: 532, 277
+  size: 49, 14
+  orig: 49, 14
+  offset: 0, 0
+  index: -1
+monster_type_1_it
+  rotate: false
+  xy: 583, 277
+  size: 49, 14
+  orig: 49, 14
+  offset: 0, 0
+  index: -1
+monster_type_1_ko
+  rotate: false
+  xy: 634, 277
+  size: 49, 14
+  orig: 49, 14
+  offset: 0, 0
+  index: -1
+monster_type_1_zh
+  rotate: false
+  xy: 685, 277
+  size: 49, 14
+  orig: 49, 14
+  offset: 0, 0
+  index: -1
 monster_type_10_de
   rotate: false
   xy: 485, 341
@@ -1012,16 +1060,16 @@ monster_type_16_en
   orig: 49, 14
   offset: 0, 0
   index: -1
-monster_type_16_fr
+monster_type_16_es
   rotate: false
-  xy: 532, 293
+  xy: 583, 293
   size: 49, 14
   orig: 49, 14
   offset: 0, 0
   index: -1
-monster_type_16_es
+monster_type_16_fr
   rotate: false
-  xy: 583, 293
+  xy: 532, 293
   size: 49, 14
   orig: 49, 14
   offset: 0, 0
@@ -1092,55 +1140,6 @@ monster_type_17_ko
 monster_type_17_zh
   rotate: false
   xy: 328, 278
-  size: 49, 14
-  orig: 49, 14
-  offset: 0, 0
-  index: -1
-monster_type_1_de
-  rotate: false
-  xy: 379, 278
-  size: 49, 14
-  orig: 49, 14
-  offset: 0, 0
-  index: -1
-monster_type_1_en
-  rotate: false
-  xy: 430, 277
-  size: 49, 14
-  orig: 49, 14
-  offset: 0, 0
-  index: -1
-monster_type_1_es
-  rotate: false
-  xy: 481, 277
-  size: 49, 14
-  orig: 49, 14
-  offset: 0, 0
-  index: -1
-monster_type_1_fr
-  rotate: false
-  xy: 532, 277
-  size: 49, 14
-  orig: 49, 14
-  offset: 0, 0
-  index: -1
-monster_type_1_it
-  rotate: false
-  xy: 583, 277
-  size: 49, 14
-  orig: 49, 14
-  offset: 0, 0
-  index: -1
-monster_type_1_ko
-  rotate: false
-  xy: 634, 277
-  size: 49, 14
-  orig: 49, 14
-  offset: 0, 0
-  index: -1
-monster_type_1_zh
-  rotate: false
-  xy: 685, 277
   size: 49, 14
   orig: 49, 14
   offset: 0, 0
@@ -1560,62 +1559,6 @@ particle_id
   index: 1
 particle_id
   rotate: false
-  xy: 244, 176
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 2
-particle_id
-  rotate: false
-  xy: 278, 210
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 3
-particle_id
-  rotate: false
-  xy: 312, 244
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 4
-particle_id
-  rotate: false
-  xy: 210, 108
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 5
-particle_id
-  rotate: false
-  xy: 244, 142
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 6
-particle_id
-  rotate: false
-  xy: 278, 176
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 7
-particle_id
-  rotate: false
-  xy: 312, 210
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 8
-particle_id
-  rotate: false
-  xy: 346, 244
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 9
-particle_id
-  rotate: false
   xy: 210, 74
   size: 32, 32
   orig: 32, 32
@@ -1684,6 +1627,13 @@ particle_id
   orig: 32, 32
   offset: 0, 0
   index: 19
+particle_id
+  rotate: false
+  xy: 244, 176
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
 particle_id
   rotate: false
   xy: 346, 176
@@ -1756,6 +1706,13 @@ particle_id
   index: 29
 particle_id
   rotate: false
+  xy: 278, 210
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+particle_id
+  rotate: false
   xy: 380, 142
   size: 32, 32
   orig: 32, 32
@@ -1810,6 +1767,48 @@ particle_id
   orig: 24, 24
   offset: 0, 0
   index: 38
+particle_id
+  rotate: false
+  xy: 312, 244
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+particle_id
+  rotate: false
+  xy: 210, 108
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
+particle_id
+  rotate: false
+  xy: 244, 142
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 6
+particle_id
+  rotate: false
+  xy: 278, 176
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 7
+particle_id
+  rotate: false
+  xy: 312, 210
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 8
+particle_id
+  rotate: false
+  xy: 346, 244
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 9
 particle_small
   rotate: false
   xy: 426, 64
@@ -1859,18 +1858,18 @@ secret_shiny
   orig: 24, 24
   offset: 0, 0
   index: -1
-secret_shiny-small
-  rotate: false
-  xy: 444, 64
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
 secret_shiny_particle
   rotate: false
   xy: 346, 74
   size: 32, 32
   orig: 32, 32
+  offset: 0, 0
+  index: -1
+secret_shiny-small
+  rotate: false
+  xy: 444, 64
+  size: 16, 16
+  orig: 16, 16
   offset: 0, 0
   index: -1
 shiny
@@ -2079,6 +2078,55 @@ skill_type_0_ko
 skill_type_0_zh
   rotate: false
   xy: 546, 481
+  size: 50, 29
+  orig: 50, 29
+  offset: 0, 0
+  index: -1
+skill_type_1_de
+  rotate: false
+  xy: 742, 419
+  size: 50, 29
+  orig: 50, 29
+  offset: 0, 0
+  index: -1
+skill_type_1_en
+  rotate: false
+  xy: 794, 419
+  size: 50, 29
+  orig: 50, 29
+  offset: 0, 0
+  index: -1
+skill_type_1_es
+  rotate: false
+  xy: 846, 419
+  size: 50, 29
+  orig: 50, 29
+  offset: 0, 0
+  index: -1
+skill_type_1_fr
+  rotate: false
+  xy: 898, 419
+  size: 50, 29
+  orig: 50, 29
+  offset: 0, 0
+  index: -1
+skill_type_1_it
+  rotate: false
+  xy: 950, 419
+  size: 50, 29
+  orig: 50, 29
+  offset: 0, 0
+  index: -1
+skill_type_1_ko
+  rotate: false
+  xy: 120, 338
+  size: 50, 29
+  orig: 50, 29
+  offset: 0, 0
+  index: -1
+skill_type_1_zh
+  rotate: false
+  xy: 104, 307
   size: 50, 29
   orig: 50, 29
   offset: 0, 0
@@ -2471,55 +2519,6 @@ skill_type_17_ko
 skill_type_17_zh
   rotate: false
   xy: 690, 419
-  size: 50, 29
-  orig: 50, 29
-  offset: 0, 0
-  index: -1
-skill_type_1_de
-  rotate: false
-  xy: 742, 419
-  size: 50, 29
-  orig: 50, 29
-  offset: 0, 0
-  index: -1
-skill_type_1_en
-  rotate: false
-  xy: 794, 419
-  size: 50, 29
-  orig: 50, 29
-  offset: 0, 0
-  index: -1
-skill_type_1_es
-  rotate: false
-  xy: 846, 419
-  size: 50, 29
-  orig: 50, 29
-  offset: 0, 0
-  index: -1
-skill_type_1_fr
-  rotate: false
-  xy: 898, 419
-  size: 50, 29
-  orig: 50, 29
-  offset: 0, 0
-  index: -1
-skill_type_1_it
-  rotate: false
-  xy: 950, 419
-  size: 50, 29
-  orig: 50, 29
-  offset: 0, 0
-  index: -1
-skill_type_1_ko
-  rotate: false
-  xy: 120, 338
-  size: 50, 29
-  orig: 50, 29
-  offset: 0, 0
-  index: -1
-skill_type_1_zh
-  rotate: false
-  xy: 104, 307
   size: 50, 29
   orig: 50, 29
   offset: 0, 0
@@ -3054,5 +3053,61 @@ tooltip_mobile
   xy: 184, 462
   size: 48, 48
   orig: 48, 48
+  offset: 0, 0
+  index: -1
+icon_sort
+  rotate: false
+  xy: 432, 0
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+icon_select_all
+  rotate: false
+  xy: 456, 0
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+icon_gender_large_female_nopad
+  rotate: false
+  xy: 423, 0
+  size: 9, 15
+  orig: 9, 15
+  offset: 0, 0
+  index: -1
+icon_gender_large_male_nopad
+  rotate: false
+  xy: 486, 0
+  size: 9, 15
+  orig: 9, 15
+  offset: 0, 0
+  index: -1
+arrow_up_alt
+  rotate: false
+  xy: 0, 0
+  size: 5, 4
+  orig: 5, 4
+  offset: 0, 0
+  index: -1
+arrow_right_alt
+  rotate: false
+  xy: 51, 0
+  size: 3, 6
+  orig: 3, 6
+  offset: 0, 0
+  index: -1
+arrow_left_alt
+  rotate: false
+  xy: 54, 0
+  size: 3, 6
+  orig: 3, 6
+  offset: 0, 0
+  index: -1
+arrow_down_alt
+  rotate: false
+  xy: 8, 0
+  size: 5, 4
+  orig: 5, 4
   offset: 0, 0
   index: -1

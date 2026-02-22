@@ -53,8 +53,9 @@ export function getCounterInclude(counterStyle: CounterStyle): string {
   return counterStyle;
 }
 
-export async function fetchBaseTheme(): Promise<JSZip> {
-  const response = await fetch('/base-theme.zip');
+export async function fetchBaseTheme(commitHash?: string): Promise<JSZip> {
+  const url = commitHash ? `/base-theme.zip?v=${commitHash}` : '/base-theme.zip';
+  const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Failed to fetch base theme: ${response.statusText}`);
   }
