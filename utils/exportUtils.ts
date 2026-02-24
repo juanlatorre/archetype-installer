@@ -3,6 +3,11 @@ import { ThemeShape, LoginVariant, CounterStyle } from '../types';
 
 export const COLORS_FILENAME_MAP: Record<string, string> = {
   default: 'CHOOSE_YOUR_COLORS.xml',
+  'original-red': 'CHOOSE_YOUR_COLORS_ORIGINAL_RED.xml',
+  'original-green': 'CHOOSE_YOUR_COLORS_ORIGINAL_GREEN.xml',
+  'original-yellow': 'CHOOSE_YOUR_COLORS_ORIGINAL_YELLOW.xml',
+  'original-purple': 'CHOOSE_YOUR_COLORS_ORIGINAL_PURPLE.xml',
+  'original-pink': 'CHOOSE_YOUR_COLORS_ORIGINAL_PINK.xml',
   frostbite: 'CHOOSE_YOUR_COLORS_FROSTBITE.xml',
   industrial: 'CHOOSE_YOUR_COLORS_INDUSTRIAL.xml',
   rose: 'CHOOSE_YOUR_COLORS_ROSÉ.xml',
