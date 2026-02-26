@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <themes>
-	<images file="jaejGI7pIp/res/custom/xbazbQAVpo/Highlight-Overlay.png" filter="lineal">
+	<images file="../res/custom/shapes/sharp/Highlight-Overlay.png" filter="lineal">
 		<area name="Highlight-Overlay-Asset" xywh="*" splitx="L5,R5" splity="T5,B5"/>
 		<animation name="Highlight-Overlay" inset="2" timeSource="selected" if="hover | keyboardFocus">
 			<frame duration="2000" ref="Highlight-Overlay-Asset" tint="#80FFFFFF"/>
@@ -8,7 +8,7 @@
 		</animation>
 	</images>
 
-	<images file="jaejGI7pIp/res/custom/xbazbQAVpo/Pure.png" filter="nearest">
+	<images file="../res/custom/shapes/sharp/Pure.png" filter="nearest">
 		<area name="Pure-Edge" xywh="*" sizeOverwriteH="2" sizeOverwriteV="2" splitx="L5,R5" splity="T5,B5"/>
 		<composed name="Main-Color-Pure-Edge" tint="main-color"><alias ref="Pure-Edge"/></composed>
 		<composed name="Sub-Color-Pure-Edge" tint="sub-color"><alias ref="Pure-Edge"/></composed>
@@ -24,43 +24,43 @@
 		<area name="Pure-Right-Edge-3px" xywh="17,0,3,20" splitx="L0,R3" splity="T5,B5"/>
 	</images>
 
-	<images file="jaejGI7pIp/res/custom/xbazbQAVpo/Window-Accent.png" filter="nearest">
+	<images file="../res/custom/shapes/sharp/Window-Accent.png" filter="nearest">
 		<area name="Window-Accent-Edge" xywh="*" splitx="L5,R5" splity="T5,B5" sizeOverwriteH="12"  sizeOverwriteV="12"/>
 	</images>
 
-	<images file="jaejGI7pIp/res/custom/xbazbQAVpo/Window-Accent2px.png" filter="nearest">
+	<images file="../res/custom/shapes/sharp/Window-Accent2px.png" filter="nearest">
 		<area name="Window-Accent2px-Edge" xywh="*" splitx="L5,R5" splity="T5,B5" sizeOverwriteH="12"  sizeOverwriteV="12"/>
 	</images>
 
-	<images file="jaejGI7pIp/res/custom/xbazbQAVpo/Gradient.png" filter="nearest">
+	<images file="../res/custom/shapes/sharp/Gradient.png" filter="nearest">
 		<area name="Gradient-Pure" xywh="*" sizeOverwriteH="12" sizeOverwriteV="12" splitx="L5,R5" splity="T5,B5"/>
 		<area name="Gradient-Pure-Right-Edge" xywh="5,0,837,94" sizeOverwriteH="12" sizeOverwriteV="12" splitx="L5,R5" splity="T5,B5"/>
 		<area name="Gradient-Pure-Bottom-Edge-2px" xywh="0,92,842,2" sizeOverwriteH="12" sizeOverwriteV="12" splitx="L5,R5" splity="T0,B2"/>
 		<composed name="Gradient" tint="main-color"><alias ref="Gradient-Pure"/></composed>
 	</images>
 
-	<images file="jaejGI7pIp/res/custom/xbazbQAVpo/Gradient-Border.png" filter="nearest">
+	<images file="../res/custom/shapes/sharp/Gradient-Border.png" filter="nearest">
 		<area name="Gradient-Border" xywh="*" sizeOverwriteH="12" sizeOverwriteV="12" splitx="L5,R5" splity="T5,B5" tint="main-color"/>
 	</images>
 
-	<images file="jaejGI7pIp/res/custom/xbazbQAVpo/Gradient-Border2px.png" filter="nearest">
+	<images file="../res/custom/shapes/sharp/Gradient-Border2px.png" filter="nearest">
 		<area name="Gradient-Border2px" xywh="*" sizeOverwriteH="12" sizeOverwriteV="12" splitx="L5,R5" splity="T5,B5"/>
 	</images>
 
-	<images file="jaejGI7pIp/res/custom/xbazbQAVpo/Map-Corners.png" filter="nearest">
-		<composed name="Map-Corners" tint="#f1f1f1"><area xywh="*" sizeOverwriteH="12" sizeOverwriteV="12" splitx="L10,R10" splity="T10,B10" tint="main-color" inset="31,2,2,2"/></composed>
+	<images filter="nearest">
+		<composed name="Map-Corners"><alias ref="none"/></composed>
 	</images>
 
-	<images file="jaejGI7pIp/res/custom/xbazbQAVpo/Fade.png" filter="nearest">
+	<images file="../res/custom/shapes/sharp/Fade.png" filter="nearest">
 		<area name="Fade-Right" xywh="*" sizeOverwriteH="12" sizeOverwriteV="12"/>
 		<area name="Fade-Left" xywh="0,0,-800,10" sizeOverwriteH="12" sizeOverwriteV="12"/>
 	</images>
 
-	<images file="jaejGI7pIp/res/custom/xbazbQAVpo/Shadow-Background.png" filter="nearest">
+	<images file="../res/custom/shapes/sharp/Shadow-Background.png" filter="nearest">
 		<area name="Shadow-Background" xywh="*" splitx="L5,R5" splity="T5,B5"/>
 	</images>
 
-	<images file="jaejGI7pIp/res/custom/xbazbQAVpo/tooltip_bubble.png" filter="nearest">
+	<images file="../res/custom/shapes/sharp/tooltip_bubble.png" filter="nearest">
 		<grid name="tooltip-shadow.background" weightsX="0,1,0,1,0" weightsY="0,1,0" border="0,5,5,5">
 			<area xywh="0,0,7,7"/>
 			<area xywh="7,0,1,7"/>
@@ -143,15 +143,15 @@
 		</composed>
 	</images>
 
-	<images file="jaejGI7pIp/res/custom/x2eLtlMVtE/Poke-Summary-Window-Round.png" filter="nearest">
+	<images file="../res/custom/summary/Poke-Summary-Window-Sharp.png" filter="nearest">
 		<area name="Poke-Summary-Window.background" xywh="*"/>
 	</images>
 
-	<images file="jaejGI7pIp/res/custom/2sTxAVRCoW/PC-Mon-Background-Base-Round.png" filter="nearest">
+	<images file="../res/custom/pc-window/PC-Mon-Background-Base-Sharp.png" filter="nearest">
 		<area name="PC-Mon-Background-Base" xywh="*"/>
 	</images>
 
-	<images file="jaejGI7pIp/res/custom/d9nZVhUoCU/PokeDex-Mon-Background-Round.png" filter="nearest">
+	<images file="../res/custom/dex/PokeDex-Mon-Background-Sharp.png" filter="nearest">
 		<area name="PokeDex-Mon-Background-Base" xywh="*"/>
 		<composed name="PokeDex-Mon-Background" inset="1,1,-10,1">
 			<alias ref="Accent-Color-Pure-Edge"/>
@@ -159,7 +159,7 @@
 		</composed>
 	</images>
 
-	<images file="jaejGI7pIp/res/custom/j4iabP1aXf/scrollbar-round.png" filter="nearest">
+	<images file="../res/custom/main/scrollbar-sharp.png" filter="nearest">
 		<select name="vscrollbar-white.thumb.background" inset="1">
 			<area xywh="*" splitx="L2,R2" splity="T2,B2" tint="main-color" if="pressed"/>
 			<area xywh="*" splitx="L2,R2" splity="T2,B2" tint="main-color" if="hover"/>

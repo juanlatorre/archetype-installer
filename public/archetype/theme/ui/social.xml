@@ -14,7 +14,7 @@
 		</theme>
 	</theme>
 	
-
+	
 	<theme name="mail-window" ref="base-tabbed-frame">
 		<param name="background"><image>Mail-Window</image></param>
 		<param name="fadeDurationShow"><int>200</int></param>

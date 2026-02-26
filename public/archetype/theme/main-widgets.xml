@@ -688,7 +688,7 @@
 				<theme name="button" ref="button">
 					<param name="border"><border>10</border></param>
 					<param name=""><image>button-npc.*</image></param>
-					<param name="font"><font>symbols-white</font></param>
+					<param name="font"><font>pb-dark-highlight-button</font></param>
 				</theme>
 				<theme name="button-ok" ref="button">
 					<param name="border"><border>0</border></param>
