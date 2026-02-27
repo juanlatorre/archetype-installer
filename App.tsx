@@ -7,6 +7,7 @@ import Sidebar from './components/Sidebar';
 import Preview from './components/Preview';
 import Footer from './components/Footer';
 import MobileApp from './components/MobileApp';
+import MaintenancePage from './components/MaintenancePage';
 import { COLOR_THEMES, CURSOR_SETS, BUBBLE_SETS, COUNTER_STYLES, DEFAULT_CUSTOM_THEME } from './constants';
 import { AppState, ColorTheme, ThemeShape, CounterStyle, LoginVariant } from './types';
 import {
@@ -45,6 +46,9 @@ const App: React.FC = () => {
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  // Check for maintenance mode
+  const isMaintenanceMode = import.meta.env.VITE_MAINTENANCE_MODE === 'true';
 
   useEffect(() => {
     const checkMobile = () => {
@@ -198,6 +202,10 @@ const App: React.FC = () => {
       setIsGenerating(false);
     }
   };
+
+  if (isMaintenanceMode) {
+    return <MaintenancePage />;
+  }
 
   if (isMobile) {
     return (
