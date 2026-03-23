@@ -5,6 +5,7 @@ import { AppState } from '../types';
 interface NavbarProps {
   state: AppState;
   archetypeInfo?: {
+    branch?: string;
     commit: string;
     time: string;
     repoUrl: string;
@@ -66,7 +67,7 @@ const Navbar: React.FC<NavbarProps> = ({ state, archetypeInfo }) => {
                 className="text-sm font-medium transition-colors hover:opacity-100 opacity-60"
                 style={{ color: 'var(--text-on-sub)' }}
               >
-                Using commit {archetypeInfo.commit.slice(0, 7)} from {archetypeInfo.time}
+                Using {archetypeInfo.branch || 'snapshot'} branch commit {archetypeInfo.commit.slice(0, 7)} from {archetypeInfo.time}
               </a>
             </>
           )}

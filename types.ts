@@ -61,6 +61,7 @@ export interface AppState {
   activeCounterStyle: CounterStyle;
   activeLoginVariant: LoginVariant;
   archetypeInfo?: {
+    branch?: string;
     commit: string;
     time: string;
     repoUrl: string;

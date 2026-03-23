@@ -18,7 +18,8 @@ import {
   getCursorInclude,
   getBubbleInclude,
   getCounterInclude,
-  fetchBaseTheme
+  fetchBaseTheme,
+  fetchLatestArchetypeInfo
 } from './utils/exportUtils';
 import { getRelativeTime } from './utils/dateUtils';
 import archetypeConfig from './archetype-config.json';
@@ -36,10 +37,11 @@ const App: React.FC = () => {
     activeCounterStyle: COUNTER_STYLES[0],
     activeLoginVariant: 'Unova',
     archetypeInfo: {
+      branch: 'snapshot',
       commit: archetypeConfig.archetypeRepo.commit,
       time: getRelativeTime(archetypeConfig.archetypeRepo.commitDate),
       repoUrl: REPO_URL,
-      loading: false,
+      loading: true,
       error: false
     }
   });
@@ -70,6 +72,54 @@ const App: React.FC = () => {
     root.style.setProperty('--glass-bg', `${state.activeTheme.sub}F2`);
   }, [state.activeTheme]);
 
+  useEffect(() => {
+    let isCancelled = false;
+
+    const loadLatestArchetypeInfo = async () => {
+      try {
+        const latestInfo = await fetchLatestArchetypeInfo(REPO_URL);
+
+        if (isCancelled) {
+          return;
+        }
+
+        setState(prev => ({
+          ...prev,
+          archetypeInfo: {
+            ...prev.archetypeInfo!,
+            branch: latestInfo.branch,
+            commit: latestInfo.commit,
+            time: getRelativeTime(latestInfo.commitDate),
+            repoUrl: REPO_URL,
+            loading: false,
+            error: false
+          }
+        }));
+      } catch (error) {
+        console.error('Unable to fetch latest archetype metadata', error);
+
+        if (isCancelled) {
+          return;
+        }
+
+        setState(prev => ({
+          ...prev,
+          archetypeInfo: {
+            ...prev.archetypeInfo!,
+            loading: false,
+            error: true
+          }
+        }));
+      }
+    };
+
+    loadLatestArchetypeInfo();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
+
   const handleThemeChange = (theme: ColorTheme) => setState(prev => ({ ...prev, activeTheme: theme }));
   const handleShapeChange = (shape: ThemeShape) => setState(prev => ({ ...prev, activeShape: shape }));
   const handleCursorSetChange = (id: string) => setState(prev => ({ ...prev, activeCursorSet: id }));
@@ -88,9 +138,25 @@ const App: React.FC = () => {
     setIsGenerating(true);
 
     try {
-      const zip = await fetchBaseTheme(state.archetypeInfo.commit);
+      const zip = await fetchBaseTheme({
+        repoUrl: REPO_URL,
+        branch: state.archetypeInfo?.branch,
+        commitHash: state.archetypeInfo?.commit
+      });
 
       const colorsFilename = getColorsFilename(state.activeTheme.id);
+
+      if (state.activeTheme.id !== 'custom') {
+        try {
+          const response = await fetch(`/themes/colors/${colorsFilename}`);
+          if (response.ok) {
+            const xmlContent = await response.text();
+            zip.file(`archetype/theme/${colorsFilename}`, xmlContent);
+          }
+        } catch (e) {
+          console.error('Failed to load selected colors XML', e);
+        }
+      }
 
       if (state.activeTheme.id === 'custom') {
         try {

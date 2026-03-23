@@ -5,7 +5,7 @@
 1. Install dependencies:
    `pnpm install`
 
-   This will automatically fetch the latest Archetype theme files from the official repository.
+   This creates a bundled local snapshot fallback of Archetype files.
 
 2. Run app:
    `pnpm dev`
@@ -16,6 +16,8 @@ To manually update Archetype files without reinstalling dependencies:
 ```bash
 npm run fetch-archetype
 ```
+
+The app now fetches the latest upstream Archetype default branch and commit at runtime for export. The bundled files are only used as a fallback when GitHub is unavailable.
 
 ## Color Themes
 
