@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { COLOR_THEMES, CURSOR_SETS, BUBBLE_SETS, COUNTER_STYLES, LOGIN_VARIANTS } from '../constants';
-import { AppState, ColorTheme, ThemeShape, CounterStyle, LoginVariant } from '../types';
+import { COLOR_THEMES, CURSOR_SETS, BUBBLE_SETS, COUNTER_STYLES, LOGIN_VARIANTS, ICON_PACKS } from '../constants';
+import { AppState, ColorTheme, ThemeShape, CounterStyle, LoginVariant, IconPackId } from '../types';
 import CustomThemeEditor from './CustomThemeEditor';
 
 interface SidebarProps {
@@ -13,6 +13,7 @@ interface SidebarProps {
   onBubbleChange: (id: string) => void;
   onCounterStyleChange: (style: CounterStyle) => void;
   onLoginVariantChange: (variant: LoginVariant) => void;
+  onIconPackChange: (id: IconPackId) => void;
   customTheme: ColorTheme;
   onCustomThemeChange: (theme: ColorTheme) => void;
 }
@@ -26,6 +27,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   onBubbleChange,
   onCounterStyleChange,
   onLoginVariantChange,
+  onIconPackChange,
   customTheme,
   onCustomThemeChange
 }) => {
@@ -199,6 +201,37 @@ const Sidebar: React.FC<SidebarProps> = ({
                   }}
                 >
                   {shape}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Icon Pack */}
+        <section>
+          <div className="mb-4">
+            <h3 className="text-lg font-bold flex items-center gap-2" style={{ color: state.activeTheme.textOnSub }}>
+              <span className="material-symbols-outlined text-primary text-xl">grid_view</span>
+              Icon Pack
+            </h3>
+            <p className="text-xs opacity-70" style={{ color: state.activeTheme.textOnSub }}>Moveset, types, abilities icons</p>
+          </div>
+          <div className="grid grid-cols-2 gap-2 p-1 rounded-lg border border-white/5" style={{ backgroundColor: 'rgba(255,255,255,0.03)' }}>
+            {ICON_PACKS.map((pack) => {
+              const isActive = state.activeIconPack === pack.id;
+              return (
+                <button
+                  key={pack.id}
+                  onClick={() => onIconPackChange(pack.id)}
+                  className="py-2.5 text-[10px] font-black uppercase tracking-tight transition-all rounded-md px-2 text-center leading-tight border shrink-0 min-h-[44px] flex items-center justify-center"
+                  style={{ 
+                    backgroundColor: isActive ? `${state.activeTheme.hex}25` : 'rgba(255,255,255,0.05)',
+                    color: state.activeTheme.textOnSub,
+                    borderColor: isActive ? state.activeTheme.hex : 'transparent',
+                    opacity: isActive ? 1 : 0.7,
+                  }}
+                >
+                  {pack.name}
                 </button>
               );
             })}

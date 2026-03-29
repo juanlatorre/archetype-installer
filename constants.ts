@@ -1,5 +1,5 @@
 
-import { ColorTheme, CursorSet, BubbleSet, CounterStyle, LoginVariant } from './types';
+import { ColorTheme, CursorSet, BubbleSet, CounterStyle, LoginVariant, IconPack } from './types';
 
 export const LOGIN_VARIANTS: { id: LoginVariant; name: string }[] = [
   { id: 'Unova', name: 'Unova' },
@@ -287,4 +287,42 @@ export const BUBBLE_SETS: BubbleSet[] = [
     name: 'Default Black',
     textColor: '#ffffff',
   }
+];
+
+export const ICON_PACKS: IconPack[] = [
+  {
+    id: 'default',
+    name: 'Default',
+    description: 'Original PokeMMO icons',
+    upstreamFolder: 'archetype-square-icons',
+    atlasPath: 'data/sprites/atlas/main.png',
+  },
+  {
+    id: 'rounded',
+    name: 'Rounded',
+    description: 'Rounded icon style',
+    upstreamFolder: 'archetype-rounded-icons',
+    atlasPath: 'data/sprites/atlas/main.png',
+  },
+  {
+    id: 'square',
+    name: 'Square',
+    description: 'Square icon style',
+    upstreamFolder: 'archetype-square-icons',
+    atlasPath: 'data/sprites/atlas/main.png',
+  },
+  {
+    id: 'rounded-outline',
+    name: 'Rounded Outline',
+    description: 'Rounded outlined icons by Cruzi',
+    upstreamFolder: 'archetype-rounded-outeline-icons',
+    atlasPath: 'data/sprites/atlas/main.png',
+  },
+  {
+    id: 'square-outline',
+    name: 'Square Outline',
+    description: 'Square outlined icons',
+    upstreamFolder: 'archetype-square-outeline-icons',
+    atlasPath: 'data/sprites/atlas/main.png',
+  },
 ];

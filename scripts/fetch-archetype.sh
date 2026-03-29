@@ -7,10 +7,8 @@ TEMP_DIR=$(mktemp -d)
 
 echo "Fetching archetype from $REPO_URL..."
 
-# Clone to temp directory
 git clone "$REPO_URL" "$TEMP_DIR"
 
-# Get latest commit info
 cd "$TEMP_DIR"
 COMMIT=$(git rev-parse HEAD)
 COMMIT_DATE=$(git log -1 --format=%ci)
@@ -22,21 +20,42 @@ echo "Cloned commit: $COMMIT ($COMMIT_DATE)"
 rm -rf "$TEMP_DIR/.git"
 rm -f "$TEMP_DIR/.gitignore"
 
-  # Move contents to public/archetype (overrides everything)
+# Check if this is new layout (archetype-theme folder exists)
+if [ -d "$TEMP_DIR/archetype-theme" ]; then
+  echo "Detected new modular layout..."
+  
+  # Move archetype-theme contents to public/archetype
+  rm -rf public/archetype
+  mkdir -p public/archetype
+  mv "$TEMP_DIR/archetype-theme"/* public/archetype/
+  
+  # Save icon packs
+  mkdir -p public/icon-packs
+  for pack in archetype-rounded-icons archetype-square-icons archetype-rounded-outeline-icons archetype-square-outeline-icons; do
+    if [ -d "$TEMP_DIR/$pack" ]; then
+      pack_name=$(echo "$pack" | sed 's/archetype-//')
+      mkdir -p "public/icon-packs/$pack_name"
+      if [ -f "$TEMP_DIR/$pack/data/sprites/atlas/main.png" ]; then
+        cp "$TEMP_DIR/$pack/data/sprites/atlas/main.png" "public/icon-packs/$pack_name/"
+        echo "  Saved icon pack: $pack_name"
+      fi
+    fi
+  done
+else
+  echo "Detected old monolithic layout..."
+  # Old layout: move everything to public/archetype
   rm -rf public/archetype
   mkdir -p public
   mv "$TEMP_DIR" public/archetype
+fi
 
-  # Update archetype-config.json with new commit info
+# Update archetype-config.json with new commit info
 node -e "
 const config = require('./$ARCHETYPE_CONFIG');
 config.archetypeRepo.commit = '$COMMIT';
 config.archetypeRepo.commitDate = '$COMMIT_DATE';
 require('fs').writeFileSync('./$ARCHETYPE_CONFIG', JSON.stringify(config, null, 2));
 "
-
-# Clean up temp directory
-rm -rf "$TEMP_DIR"
 
 # Generate file manifest
 ./generate-files.sh

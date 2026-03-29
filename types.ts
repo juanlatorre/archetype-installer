@@ -14,6 +14,16 @@ export type CounterStyle =
 
 export type LoginVariant = 'Unova' | 'Allstars' | 'Default';
 
+export type IconPackId = 'default' | 'rounded' | 'square' | 'rounded-outline' | 'square-outline';
+
+export interface IconPack {
+  id: IconPackId;
+  name: string;
+  description?: string;
+  upstreamFolder: string;
+  atlasPath: string;
+}
+
 export interface ColorTheme {
   id: string;
   name: string;
@@ -60,6 +70,7 @@ export interface AppState {
   activeBubbleSet: string;
   activeCounterStyle: CounterStyle;
   activeLoginVariant: LoginVariant;
+  activeIconPack: IconPackId;
   archetypeInfo?: {
     branch?: string;
     commit: string;

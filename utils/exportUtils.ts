@@ -1,5 +1,6 @@
 import JSZip from 'jszip';
-import { ThemeShape, LoginVariant, CounterStyle } from '../types';
+import { ThemeShape, LoginVariant, CounterStyle, IconPack, IconPackId } from '../types';
+import { ICON_PACKS } from '../constants';
 
 const DEFAULT_REPO_URL = 'https://github.com/ssjshields/archetype';
 const GITHUB_API_BASE = 'https://api.github.com';
@@ -28,6 +29,81 @@ function buildCodeloadBranchArchiveUrl(repoUrl: string, branch: string): string 
   return `https://codeload.github.com/${owner}/${repo}/zip/refs/heads/${encodedBranch}`;
 }
 
+function detectArchiveLayout(sourceZip: JSZip, archiveRoot: string): 'old' | 'new' {
+  return sourceZip.file(`${archiveRoot}archetype-theme/info.xml`) ? 'new' : 'old';
+}
+
+async function normalizeOldArchive(sourceZip: JSZip, archiveRoot: string): Promise<JSZip> {
+  const normalizedZip = new JSZip();
+  const fileEntries = Object.values(sourceZip.files).filter(file => !file.dir);
+
+  for (const file of fileEntries) {
+    if (!file.name.startsWith(archiveRoot)) continue;
+
+    const relativePath = file.name.slice(archiveRoot.length);
+    if (!relativePath) continue;
+
+    if (relativePath.startsWith('archetype-theme/')) {
+      const themePath = relativePath.slice('archetype-theme/'.length);
+      if (themePath) {
+        const content = await file.async('uint8array');
+        normalizedZip.file(`archetype/${themePath}`, content);
+      }
+      continue;
+    }
+
+    if (
+      relativePath.startsWith('archetype-rounded-icons/') ||
+      relativePath.startsWith('archetype-square-icons/') ||
+      relativePath.startsWith('archetype-rounded-outeline-icons/') ||
+      relativePath.startsWith('archetype-square-outeline-icons/')
+    ) {
+      continue;
+    }
+
+    const content = await file.async('uint8array');
+    normalizedZip.file(`archetype/${relativePath}`, content);
+  }
+
+  return normalizedZip;
+}
+
+async function normalizeNewArchive(sourceZip: JSZip, archiveRoot: string): Promise<JSZip> {
+  const normalizedZip = new JSZip();
+  const themePrefix = `${archiveRoot}archetype-theme/`;
+  const fileEntries = Object.values(sourceZip.files).filter(file => !file.dir);
+
+  for (const file of fileEntries) {
+    if (!file.name.startsWith(archiveRoot)) continue;
+
+    const relativePath = file.name.slice(archiveRoot.length);
+    if (!relativePath) continue;
+
+    if (file.name.startsWith(themePrefix)) {
+      const themePath = file.name.slice(themePrefix.length);
+      if (themePath) {
+        const content = await file.async('uint8array');
+        normalizedZip.file(`archetype/${themePath}`, content);
+      }
+      continue;
+    }
+
+    if (
+      relativePath.startsWith('archetype-rounded-icons/') ||
+      relativePath.startsWith('archetype-square-icons/') ||
+      relativePath.startsWith('archetype-rounded-outeline-icons/') ||
+      relativePath.startsWith('archetype-square-outeline-icons/')
+    ) {
+      continue;
+    }
+
+    const content = await file.async('uint8array');
+    normalizedZip.file(`archetype/${relativePath}`, content);
+  }
+
+  return normalizedZip;
+}
+
 async function fetchGithubBranchArchive(repoUrl: string, branch: string): Promise<JSZip> {
   const archiveUrl = buildCodeloadBranchArchiveUrl(repoUrl, branch);
   const response = await fetch(archiveUrl);
@@ -38,7 +114,6 @@ async function fetchGithubBranchArchive(repoUrl: string, branch: string): Promis
 
   const archiveBuffer = await response.arrayBuffer();
   const sourceZip = await JSZip.loadAsync(archiveBuffer);
-  const normalizedZip = new JSZip();
 
   const firstFilePath = Object.keys(sourceZip.files).find(path => !sourceZip.files[path].dir && path.includes('/'));
   const archiveRoot = firstFilePath ? `${firstFilePath.split('/')[0]}/` : '';
@@ -47,23 +122,41 @@ async function fetchGithubBranchArchive(repoUrl: string, branch: string): Promis
     throw new Error('Unexpected archetype archive format');
   }
 
-  const fileEntries = Object.values(sourceZip.files).filter(file => !file.dir);
+  const layout = detectArchiveLayout(sourceZip, archiveRoot);
 
-  for (const file of fileEntries) {
-    if (!file.name.startsWith(archiveRoot)) {
-      continue;
-    }
-
-    const relativePath = file.name.slice(archiveRoot.length);
-    if (!relativePath) {
-      continue;
-    }
-
-    const content = await file.async('uint8array');
-    normalizedZip.file(`archetype/${relativePath}`, content);
+  if (layout === 'new') {
+    return normalizeNewArchive(sourceZip, archiveRoot);
   }
 
-  return normalizedZip;
+  return normalizeOldArchive(sourceZip, archiveRoot);
+}
+
+export async function fetchIconPackAtlas(
+  iconPackId: IconPackId,
+  zip: JSZip
+): Promise<Uint8Array | null> {
+  const pack = ICON_PACKS.find(p => p.id === iconPackId);
+  if (!pack) return null;
+
+  // Map icon pack ID to the folder name in the zip
+  const folderNameMap: Record<IconPackId, string> = {
+    'default': 'square-icons',
+    'rounded': 'rounded-icons',
+    'square': 'square-icons',
+    'rounded-outline': 'rounded-outeline-icons',
+    'square-outline': 'square-outeline-icons'
+  };
+
+  const folderName = folderNameMap[iconPackId];
+  const atlasPath = `archetype/icon-packs/${folderName}/main.png`;
+
+  const atlasFile = zip.file(atlasPath);
+  if (!atlasFile) {
+    console.warn(`Icon pack atlas not found in zip: ${atlasPath}`);
+    return null;
+  }
+
+  return await atlasFile.async('uint8array');
 }
 
 export async function fetchLatestArchetypeInfo(repoUrl: string = DEFAULT_REPO_URL): Promise<LatestArchetypeInfo> {
@@ -161,6 +254,10 @@ export function getBubbleInclude(bubbleId: string): string {
 export function getCounterInclude(counterStyle: CounterStyle): string {
   if (counterStyle === 'None') return 'Counter-Right';
   return counterStyle;
+}
+
+export function getIconPackAtlasPath(): string {
+  return 'data/sprites/atlas/main.png';
 }
 
 interface FetchBaseThemeOptions {

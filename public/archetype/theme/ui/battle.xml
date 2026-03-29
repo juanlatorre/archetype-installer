@@ -66,6 +66,7 @@
 		<param name="border"><border>0,0,0,0</border></param>
 	<theme name="health-label" ref="label" allowWildcard="true">
       <param name="font"><font>mechabold</font></param>
+	  <param name="border"><border>4,0,0,0</border></param>
     </theme>	
 	</theme>
 

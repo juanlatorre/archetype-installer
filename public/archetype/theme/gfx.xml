@@ -809,13 +809,13 @@
     <area name="battle-ui-float" xywh="0,30,9,6" splitx="L4,R4" splity="T2,B3" inset="10,6,6,32"/>
     <area name="battle-ui-self-slim" xywh="0,30,9,6" splitx="L4,R4" splity="T2,B3" inset="11,31,7,16"/>
 
-    <area name="battle-ui-heart1" xywh="0,50,16,16" splitx="L16,R0" splity="T16,B0" inset="4,83,-4,-83"/>
-    <area name="battle-ui-heart2" xywh="20,50,18,18" splitx="L18,R0" splity="T18,B0" inset="3,82,-3,-82"/>
+    <area name="battle-ui-heart1" xywh="0,50,16,16" splitx="L16,R0" splity="T16,B0" inset="1,83,-4,-83"/>
+    <area name="battle-ui-heart2" xywh="20,50,18,18" splitx="L18,R0" splity="T18,B0" inset="0,82,-3,-82"/>
     <animation name="battle-ui-heart" timeSource="enabled" tint="main-color">
       <frame duration="1400" ref="battle-ui-heart1"/>
       <frame duration="100" ref="battle-ui-heart2"/>
     </animation>
-    <composed name="battle-ui-self" inset="19,31,-2,16">
+    <composed name="battle-ui-self" inset="19,0,-2,48">
       <area xywh="0,20,9,6" splitx="L4,R4" splity="T2,B3"/>
       <alias ref="Sub-Color-Pure" inset="0,0,2,2" tint="#E0FFFFFF"/>
       <alias ref="battle-ui-heart"/>

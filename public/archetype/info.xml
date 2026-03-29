@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- sprite_atlas options, replace path with one of the following
-sprite_atlas="icons/sharp/main.atlas"
-sprite_atlas="icons/round/main.atlas"
-sprite_atlas="icons/sharp_outlined/main.atlas"
-sprite_atlas="icons/round_outlined/main.atlas"
-sprite_atlas="icons/default/main.atlas"
--->
-<resource name="Archetype Theme" version="1.6" description="Total PokeMMO visual overhaul including animations and customizable options." author="nurver, realmadrid1809,&#10;AnonymousPoke, DucksAreBad,&#10;juanlatorre" weblink="https://forums.pokemmo.com/index.php?/topic/149494-gui-archetype">
+<resource name="Archetype Theme" version="1.7" description="Total PokeMMO visual overhaul including animations and customizable options." author="nurver, realmadrid1809,&#10;AnonymousPoke, DucksAreBad,&#10;juanlatorre" weblink="https://forums.pokemmo.com/index.php?/topic/149494-gui-archetype">
     <themes theme_revision="7">
-        <theme path="theme/" name="Archetype" is_mobile="false" sprite_atlas="icons/round/main.atlas"/>
+        <theme path="theme/" name="Archetype" is_mobile="false"/>
     </themes>
 </resource>

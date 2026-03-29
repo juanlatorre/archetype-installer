@@ -9,17 +9,18 @@ import Footer from './components/Footer';
 import MobileApp from './components/MobileApp';
 import MaintenancePage from './components/MaintenancePage';
 import { COLOR_THEMES, CURSOR_SETS, BUBBLE_SETS, COUNTER_STYLES, DEFAULT_CUSTOM_THEME } from './constants';
-import { AppState, ColorTheme, ThemeShape, CounterStyle, LoginVariant } from './types';
+import { AppState, ColorTheme, ThemeShape, CounterStyle, LoginVariant, IconPackId } from './types';
 import {
   getColorsFilename,
   getShapeInclude,
-  getShapeAtlas,
   getLoginInclude,
   getCursorInclude,
   getBubbleInclude,
   getCounterInclude,
   fetchBaseTheme,
-  fetchLatestArchetypeInfo
+  fetchLatestArchetypeInfo,
+  fetchIconPackAtlas,
+  getIconPackAtlasPath
 } from './utils/exportUtils';
 import { getRelativeTime } from './utils/dateUtils';
 import archetypeConfig from './archetype-config.json';
@@ -36,6 +37,7 @@ const App: React.FC = () => {
     activeBubbleSet: BUBBLE_SETS[0].id,
     activeCounterStyle: COUNTER_STYLES[0],
     activeLoginVariant: 'Unova',
+    activeIconPack: 'rounded',
     archetypeInfo: {
       branch: 'snapshot',
       commit: archetypeConfig.archetypeRepo.commit,
@@ -49,7 +51,6 @@ const App: React.FC = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Check for maintenance mode
   const isMaintenanceMode = import.meta.env.VITE_MAINTENANCE_MODE === 'true';
 
   useEffect(() => {
@@ -126,6 +127,7 @@ const App: React.FC = () => {
   const handleBubbleSetChange = (id: string) => setState(prev => ({ ...prev, activeBubbleSet: id }));
   const handleCounterStyleChange = (style: CounterStyle) => setState(prev => ({ ...prev, activeCounterStyle: style }));
   const handleLoginVariantChange = (variant: LoginVariant) => setState(prev => ({ ...prev, activeLoginVariant: variant }));
+  const handleIconPackChange = (id: IconPackId) => setState(prev => ({ ...prev, activeIconPack: id }));
 
   const handleCustomThemeChange = (theme: ColorTheme) => {
     setCustomTheme(theme);
@@ -180,29 +182,11 @@ const App: React.FC = () => {
         }
       }
 
-      const shapeInclude = getShapeInclude(state.activeShape);
-      const shapeAtlas = getShapeAtlas(state.activeShape);
       const loginInclude = getLoginInclude(state.activeLoginVariant);
       const cursorInclude = getCursorInclude(state.activeCursorSet);
+      const shapeInclude = getShapeInclude(state.activeShape);
       const bubbleInclude = getBubbleInclude(state.activeBubbleSet);
       const counterInclude = getCounterInclude(state.activeCounterStyle);
-
-      const infoXml = await zip.file('archetype/info.xml')?.async('string');
-      if (!infoXml) throw new Error('archetype/info.xml not found');
-
-      let modifiedInfoXml = infoXml.replace(
-        /sprite_atlas="[^"]*"/,
-        `sprite_atlas="${shapeAtlas}"`
-      );
-
-      if (state.activeTheme.id === 'custom') {
-        modifiedInfoXml = modifiedInfoXml.replace(
-          /name="Archetype"/,
-          `name="${state.activeTheme.name}"`
-        );
-      }
-
-      zip.file('archetype/info.xml', modifiedInfoXml);
 
       const themeXml = await zip.file('archetype/theme/theme.xml')?.async('string');
       if (!themeXml) throw new Error('archetype/theme/theme.xml not found');
@@ -218,20 +202,20 @@ const App: React.FC = () => {
 
       const modifiedLookXml = lookXml
         .replace(
-          /<include filename="assets\/Unova\.xml"\/>/,
-          `<include filename="assets/${loginInclude}.xml"/>`
+          /<include filename="backgrounds\/[^"]*"\/>/,
+          `<include filename="backgrounds/${loginInclude}.xml"/>`
         )
         .replace(
-          /<include filename="assets\/Cursors-Black\.xml"\/>/,
-          `<include filename="assets/${cursorInclude}.xml"/>`
+          /<include filename="cursors\/[^"]*"\/>/,
+          `<include filename="cursors/${cursorInclude}.xml"/>`
         )
         .replace(
-          /<include filename="assets\/Round\.xml"\/>/,
-          `<include filename="assets/${shapeInclude}.xml"/>`
+          /<include filename="shapes\/[^"]*"\/>/,
+          `<include filename="shapes/${shapeInclude}.xml"/>`
         )
         .replace(
-          /<include filename="assets\/Archetype\.xml"\/>/,
-          `<include filename="assets/${bubbleInclude}.xml"/>`
+          /<include filename="speech-bubbles\/[^"]*"\/>/,
+          `<include filename="speech-bubbles/${bubbleInclude}.xml"/>`
         );
       zip.file('archetype/theme/CHOOSE_YOUR_LOOK.xml', modifiedLookXml);
 
@@ -239,10 +223,17 @@ const App: React.FC = () => {
       if (!counterXml) throw new Error('archetype/theme/CHOOSE_YOUR_COUNTER.xml not found');
 
       const modifiedCounterXml = counterXml.replace(
-        /<include filename="assets\/[^"]*"\/>/,
-        `<include filename="assets/${counterInclude}.xml"/>`
+        /<include filename="counters\/[^"]*"\/>/,
+        `<include filename="counters/${counterInclude}.xml"/>`
       );
       zip.file('archetype/theme/CHOOSE_YOUR_COUNTER.xml', modifiedCounterXml);
+
+      const atlasData = await fetchIconPackAtlas(state.activeIconPack, zip);
+
+      if (atlasData) {
+        const atlasPath = getIconPackAtlasPath();
+        zip.file(`archetype/${atlasPath}`, atlasData);
+      }
 
       const blob = await zip.generateAsync({ type: 'blob' });
       const url = URL.createObjectURL(blob);
@@ -278,6 +269,7 @@ const App: React.FC = () => {
       <MobileApp
         state={state}
         onThemeChange={handleThemeChange}
+        onIconPackChange={handleIconPackChange}
         onGenerate={handleGenerate}
         isGenerating={isGenerating}
       />
@@ -304,6 +296,7 @@ const App: React.FC = () => {
           onBubbleChange={handleBubbleSetChange}
           onCounterStyleChange={handleCounterStyleChange}
           onLoginVariantChange={handleLoginVariantChange}
+          onIconPackChange={handleIconPackChange}
           customTheme={customTheme}
           onCustomThemeChange={handleCustomThemeChange}
         />

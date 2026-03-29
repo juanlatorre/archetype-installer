@@ -1,15 +1,16 @@
 import React from 'react';
-import { AppState, ColorTheme } from '../types';
-import { COLOR_THEMES } from '../constants';
+import { AppState, ColorTheme, IconPackId } from '../types';
+import { COLOR_THEMES, ICON_PACKS } from '../constants';
 
 interface MobileAppProps {
   state: AppState;
   onThemeChange: (theme: ColorTheme) => void;
+  onIconPackChange: (id: IconPackId) => void;
   onGenerate: () => void;
   isGenerating: boolean;
 }
 
-const MobileApp: React.FC<MobileAppProps> = ({ state, onThemeChange, onGenerate, isGenerating }) => {
+const MobileApp: React.FC<MobileAppProps> = ({ state, onThemeChange, onIconPackChange, onGenerate, isGenerating }) => {
   return (
     <div
       className="flex flex-col h-screen overflow-hidden transition-colors duration-500"
@@ -65,6 +66,42 @@ const MobileApp: React.FC<MobileAppProps> = ({ state, onThemeChange, onGenerate,
                 </div>
                 {isActive && (
                   <span className="material-symbols-outlined text-xl" style={{ color: theme.hex }}>check_circle</span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        <h2 className="text-sm font-bold uppercase tracking-widest opacity-60 mb-4 mt-8 flex items-center gap-2">
+          <span className="material-symbols-outlined text-base">grid_view</span>
+          Icon Pack
+        </h2>
+
+        <div className="space-y-3">
+          {ICON_PACKS.map((pack) => {
+            const isActive = state.activeIconPack === pack.id;
+            return (
+              <button
+                key={pack.id}
+                onClick={() => onIconPackChange(pack.id)}
+                className={`w-full flex items-center justify-between p-4 rounded-xl transition-all border text-left ${
+                  isActive
+                    ? 'border-primary shadow-lg'
+                    : 'border-white/5 hover:border-white/10 bg-white/5'
+                }`}
+                style={{
+                  backgroundColor: isActive ? `${state.activeTheme.hex}25` : undefined,
+                  borderColor: isActive ? state.activeTheme.hex : undefined
+                }}
+              >
+                <div>
+                  <div className="font-bold text-base">{pack.name}</div>
+                  {pack.description && (
+                    <div className="text-xs opacity-60 mt-0.5">{pack.description}</div>
+                  )}
+                </div>
+                {isActive && (
+                  <span className="material-symbols-outlined text-xl" style={{ color: state.activeTheme.hex }}>check_circle</span>
                 )}
               </button>
             );
